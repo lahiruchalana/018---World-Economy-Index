@@ -2,10 +2,9 @@ package com.example.l010myprojectsworldeconomyindex.controller;
 
 import com.example.l010myprojectsworldeconomyindex.model.GDP;
 import com.example.l010myprojectsworldeconomyindex.service.GDPService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/data/gdp")
@@ -20,6 +19,11 @@ public class GDPController {
     @PostMapping
     public void addNewGDPData(@RequestBody GDP gdp) {
         gdpService.addNewGDP(gdp);
+    }
+
+    @GetMapping
+    public List<GDP> getGDPData() {
+        return gdpService.getGDPData();
     }
 
 }

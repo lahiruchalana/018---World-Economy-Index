@@ -5,6 +5,8 @@ import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GDPService {
 
@@ -17,5 +19,9 @@ public class GDPService {
 
     public void addNewGDP(GDP gdp) {
         gdpRepository.save(gdp);
+    }
+
+    public List<GDP> getGDPData() {
+        return gdpRepository.findAll();
     }
 }
