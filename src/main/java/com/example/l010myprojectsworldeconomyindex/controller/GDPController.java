@@ -27,6 +27,11 @@ public class GDPController {
         return gdpService.getGDPData();
     }
 
+    @GetMapping(path = "{country}")
+    public GDP getGDPByCountry(@PathVariable("country") String country) {
+        return gdpService.getGDPByCountry(country);
+    }
+
     @PutMapping(path = "{gdpId}")
     public void updateGDPData(
             @PathVariable("gdpId") Long gdpId,
