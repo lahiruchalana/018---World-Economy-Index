@@ -40,5 +40,10 @@ public class GDPController {
         gdpService.updateGDPData(gdpId, gdpValue, year);
     }
 
+    @DeleteMapping(path = "{gdpId}")
+    public void deleteGDPData(
+            @PathVariable("gdpId") Long gdpId ) {
+        gdpService.deleteGDPData(gdpId);
+    }
 
 }

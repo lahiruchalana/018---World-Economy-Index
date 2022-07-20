@@ -54,4 +54,14 @@ public class GDPService {
 
         return gdpOptional.get();
     }
+
+
+    public void deleteGDPData(Long gdpId) {
+        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
+                "id: " + gdpId + "is not exist"
+        ));
+
+        System.out.println(gdpId);
+        gdpRepository.delete(gdp);
+    }
 }
