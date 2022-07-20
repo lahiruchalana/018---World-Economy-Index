@@ -4,6 +4,7 @@ import com.example.l010myprojectsworldeconomyindex.model.GDP;
 import com.example.l010myprojectsworldeconomyindex.service.GDPService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -25,5 +26,14 @@ public class GDPController {
     public List<GDP> getGDPData() {
         return gdpService.getGDPData();
     }
+
+    @PutMapping(path = "{gdpId}")
+    public void updateGDPData(
+            @PathVariable("gdpId") Long gdpId,
+            @RequestParam(required = false) Integer gdpValue,
+            @RequestParam(required = false) YearMonth year) {
+        gdpService.updateGDPData(gdpId, gdpValue, year);
+    }
+
 
 }
