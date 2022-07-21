@@ -4,6 +4,8 @@ import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CurrentPopulationService {
 
@@ -14,6 +16,13 @@ public class CurrentPopulationService {
     }
 
     public void addCurrentPopulationData(CurrentPopulation currentPopulation) {
+        Optional<CurrentPopulation> currentPopulationOptional =
+                currentPopulationRepository.getCurrentPopulationByCountryOrCountryId(currentPopulation.getCountry(), currentPopulation.getCountryId());
+
+        if (currentPopulationOptional.isPresent()) {
+            throw new IllegalStateException("country: " + currentPopulation.getCountry() + " or countryId: " + currentPopulation.getCountryId() +
+                    " is existing, not allowing to create multiple records for a country. so please update the existing country record. use updateCurrentPopulationData method");
+        }
 
         currentPopulationRepository.save(currentPopulation);
     }
