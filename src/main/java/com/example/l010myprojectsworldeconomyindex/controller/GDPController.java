@@ -35,6 +35,14 @@ public class GDPController {
         return new ResponseEntity<>(gdpService.getGDPByCountry(country), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/country/and/year/between")
+    public ResponseEntity<List<GDP>> getGDPDataByCountryAndYearBetween(
+            @RequestParam(required = true) String country,
+            @RequestParam(required = true) YearMonth yearMonthStart,
+            @RequestParam(required = true) YearMonth yearMonthEnd) {
+        return new ResponseEntity<>(gdpService.getGDPDataByCountryAndYearBetween(country, yearMonthStart, yearMonthEnd), HttpStatus.OK);
+    }
+
     @PutMapping(path = "{gdpId}")
     public ResponseEntity<?> updateGDPData(
             @PathVariable("gdpId") Long gdpId,

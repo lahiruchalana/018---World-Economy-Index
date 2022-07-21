@@ -2,13 +2,11 @@ package com.example.l010myprojectsworldeconomyindex.service;
 
 import com.example.l010myprojectsworldeconomyindex.model.GDP;
 import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GDPService {
@@ -62,5 +60,11 @@ public class GDPService {
 
         System.out.println(gdpId);
         gdpRepository.delete(gdp);
+    }
+
+    public List<GDP> getGDPDataByCountryAndYearBetween(String country, YearMonth yearMonthStart, YearMonth yearMonthEnd) {
+        List<GDP> gdpList = gdpRepository.findAllByCountryAndYearAfterAndYearBefore(country, yearMonthStart, yearMonthEnd);
+
+        return gdpList;
     }
 }
