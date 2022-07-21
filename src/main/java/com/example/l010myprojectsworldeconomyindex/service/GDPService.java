@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -16,7 +15,7 @@ public class GDPService {
 
     private final GDPRepository gdpRepository;
 
-    @Autowired
+
     public GDPService(GDPRepository gdpRepository) {
         this.gdpRepository = gdpRepository;
     }
@@ -45,14 +44,14 @@ public class GDPService {
 
     }
 
-    public GDP getGDPByCountry(String country) {    // only to get one gdp object // but need a List<GDP>
-        Optional<GDP> gdpOptional = gdpRepository.findByCountry(country);
+    public List<GDP> getGDPByCountry(String country) {
+        List<GDP> gdpList = gdpRepository.findAllByCountry(country);
 
-        if (!gdpOptional.isPresent()) {
+        if (gdpList.isEmpty()) {
             throw new IllegalStateException("country: " + country + " is not exist");
         }
 
-        return gdpOptional.get();
+        return gdpList;
     }
 
 

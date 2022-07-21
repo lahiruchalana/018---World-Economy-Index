@@ -2,6 +2,8 @@ package com.example.l010myprojectsworldeconomyindex.controller;
 
 import com.example.l010myprojectsworldeconomyindex.model.GDP;
 import com.example.l010myprojectsworldeconomyindex.service.GDPService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.YearMonth;
@@ -18,32 +20,35 @@ public class GDPController {
     }
 
     @PostMapping
-    public void addNewGDPData(@RequestBody GDP gdp) {
+    public ResponseEntity<?> addNewGDPData(@RequestBody GDP gdp) {
         gdpService.addNewGDP(gdp);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<GDP> getGDPData() {
-        return gdpService.getGDPData();
+    public ResponseEntity<List<GDP>> getGDPData() {
+        return new ResponseEntity<>(gdpService.getGDPData(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{country}")
-    public GDP getGDPByCountry(@PathVariable("country") String country) {
-        return gdpService.getGDPByCountry(country);
+    public ResponseEntity<List<GDP>> getGDPByCountry(@PathVariable("country") String country) {
+        return new ResponseEntity<>(gdpService.getGDPByCountry(country), HttpStatus.OK);
     }
 
     @PutMapping(path = "{gdpId}")
-    public void updateGDPData(
+    public ResponseEntity<?> updateGDPData(
             @PathVariable("gdpId") Long gdpId,
             @RequestParam(required = false) Integer gdpValue,
             @RequestParam(required = false) YearMonth year) {
         gdpService.updateGDPData(gdpId, gdpValue, year);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "{gdpId}")
-    public void deleteGDPData(
+    public ResponseEntity<?> deleteGDPData(
             @PathVariable("gdpId") Long gdpId ) {
         gdpService.deleteGDPData(gdpId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
