@@ -65,6 +65,10 @@ public class GDPService {
     public List<GDP> getGDPDataByCountryAndYearBetween(String country, YearMonth yearMonthStart, YearMonth yearMonthEnd) {
         List<GDP> gdpList = gdpRepository.findAllByCountryAndYearAfterAndYearBefore(country, yearMonthStart, yearMonthEnd);
 
+        if (gdpList.isEmpty()) {
+            throw new IllegalStateException("country: " + country + " has no any recorded GDP data between " + yearMonthStart + " - " + yearMonthEnd + " time period");
+        }
+
         return gdpList;
     }
 }
