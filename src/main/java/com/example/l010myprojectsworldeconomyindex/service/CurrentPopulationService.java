@@ -4,6 +4,7 @@ import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,9 @@ public class CurrentPopulationService {
         }
 
         currentPopulationRepository.save(currentPopulation);
+    }
+
+    public List<CurrentPopulation> getALlCurrentPopulationData() {
+        return currentPopulationRepository.findAll();
     }
 }
