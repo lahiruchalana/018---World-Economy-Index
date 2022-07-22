@@ -31,4 +31,12 @@ public class CurrentPopulationService {
     public List<CurrentPopulation> getALlCurrentPopulationData() {
         return currentPopulationRepository.findAll();
     }
+
+    public void deleteCurrentPopulationData(Long currentPopulationId) {
+        CurrentPopulation currentPopulation = currentPopulationRepository.findById(currentPopulationId).orElseThrow( () ->
+                new IllegalStateException("currentPopulationId: " + currentPopulationId + " does not exist.")
+        );
+
+        currentPopulationRepository.delete(currentPopulation);
+    }
 }

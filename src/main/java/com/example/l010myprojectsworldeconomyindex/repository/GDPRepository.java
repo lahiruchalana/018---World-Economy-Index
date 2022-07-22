@@ -16,6 +16,4 @@ public interface GDPRepository extends JpaRepository<GDP, Long> {
     // get records of relevant time period
     List<GDP> findAllByCountryAndYearAfterAndYearBefore(String country, YearMonth yearStart, YearMonth yearEnd);
 
-
-    // create some queries // func name -->> (retrieveGDPData())
 }

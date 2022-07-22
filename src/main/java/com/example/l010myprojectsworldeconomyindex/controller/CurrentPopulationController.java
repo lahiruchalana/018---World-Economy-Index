@@ -28,4 +28,11 @@ public class CurrentPopulationController {
     public ResponseEntity<List<CurrentPopulation>> getAllCurrentPopulationData() {
         return new ResponseEntity<>(currentPopulationService.getALlCurrentPopulationData(), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "{currentPopulationId}")
+    public ResponseEntity<?> deleteCurrentPopulationData(
+            @PathVariable("currentPopulationId") Long currentPopulationId ) {
+        currentPopulationService.deleteCurrentPopulationData(currentPopulationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

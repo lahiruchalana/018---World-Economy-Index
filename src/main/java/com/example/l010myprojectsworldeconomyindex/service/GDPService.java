@@ -46,7 +46,7 @@ public class GDPService {
         List<GDP> gdpList = gdpRepository.findAllByCountry(country);
 
         if (gdpList.isEmpty()) {
-            throw new IllegalStateException("country: " + country + " is not exist");
+            throw new IllegalStateException("country: " + country + " does not exist");
         }
 
         return gdpList;
@@ -55,7 +55,7 @@ public class GDPService {
 
     public void deleteGDPData(Long gdpId) {
         GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
-                "id: " + gdpId + "is not exist"
+                "id: " + gdpId + " does not exist"
         ));
 
         System.out.println(gdpId);
