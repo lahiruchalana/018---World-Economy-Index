@@ -53,4 +53,14 @@ public class CurrentPopulationService {
         currentPopulationOptional.get().setCurrentPopulation(currentPopulation);
         currentPopulationOptional.get().setUpdatedYear(updatedYear);
     }
+
+    public Optional<CurrentPopulation> getCurrentPopulationDataByCountry(String country) {
+        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.findByCountry(country);
+
+        if (!currentPopulationOptional.isPresent()) {
+            throw new IllegalStateException("country: " + country + " does not exist");
+        }
+
+        return currentPopulationRepository.findByCountry(country);
+    }
 }

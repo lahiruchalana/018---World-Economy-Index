@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/data/population/current")
@@ -45,5 +46,12 @@ public class CurrentPopulationController {
             ) {
         currentPopulationService.updateCurrentPopulationData(country, currentPopulation, updatedYear);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "{country}")
+    public ResponseEntity<Optional<CurrentPopulation>> getCurrentPopulationDataByCountry(
+            @PathVariable("country") String country
+    ) {
+        return new ResponseEntity<>(currentPopulationService.getCurrentPopulationDataByCountry(country), HttpStatus.OK);
     }
 }
