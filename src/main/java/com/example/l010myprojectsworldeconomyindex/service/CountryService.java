@@ -5,6 +5,7 @@ import com.example.l010myprojectsworldeconomyindex.repository.CountryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CountryService {
@@ -17,5 +18,16 @@ public class CountryService {
 
     public List<Country> getAllCountryData() {
         return countryRepository.findAll();
+    }
+
+    public void addNewCountryData(Country country) {
+        Optional<Country> countryOptional = countryRepository.findByCountryOrCountryId(country.getCountry(), country.getCountryId());
+
+        if (countryOptional.isPresent()) {
+            throw new IllegalStateException("country: " + countryOptional.get().getCountry() + " or countryId: " + countryOptional.get().getCountryId() +
+                    " exists in data records, so update function is only available for this country");
+        }
+
+        countryRepository.save(country);
     }
 }
