@@ -4,6 +4,8 @@ import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,5 +40,17 @@ public class CurrentPopulationService {
         );
 
         currentPopulationRepository.delete(currentPopulation);
+    }
+
+    @Transactional
+    public void updateCurrentPopulationData(String country, Integer currentPopulation, Year updatedYear) throws IllegalStateException {
+        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.findByCountry(country);
+
+        if (!currentPopulationOptional.isPresent()) {
+            throw new IllegalStateException("country: " + country + " doest not exist, so first create the country: " + country + " data");
+        }
+
+        currentPopulationOptional.get().setCurrentPopulation(currentPopulation);
+        currentPopulationOptional.get().setUpdatedYear(updatedYear);
     }
 }

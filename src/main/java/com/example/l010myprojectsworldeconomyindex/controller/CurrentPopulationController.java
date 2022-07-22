@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -33,6 +34,16 @@ public class CurrentPopulationController {
     public ResponseEntity<?> deleteCurrentPopulationData(
             @PathVariable("currentPopulationId") Long currentPopulationId ) {
         currentPopulationService.deleteCurrentPopulationData(currentPopulationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path = "{country}")
+    public ResponseEntity<?> updateCurrentPopulationData(
+            @PathVariable("country") String country,
+            @RequestParam(required = true) Integer currentPopulation,
+            @RequestParam(required = true) Year updatedYear
+            ) {
+        currentPopulationService.updateCurrentPopulationData(country, currentPopulation, updatedYear);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

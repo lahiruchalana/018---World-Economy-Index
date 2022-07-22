@@ -11,4 +11,6 @@ public interface CurrentPopulationRepository extends JpaRepository<CurrentPopula
 
     Optional<CurrentPopulation> getCurrentPopulationByCountryOrCountryId(String country, Long countryId);
 
+    Optional<CurrentPopulation> findByCountry(String country);
+
 }
