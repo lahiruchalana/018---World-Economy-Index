@@ -31,4 +31,11 @@ public class CountryController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "{country}")
+    public ResponseEntity<Country> getCountryDataByCountry(
+            @PathVariable("country") String country
+    ) {
+        return new ResponseEntity<>(countryService.getCountryDataByCountry(country), HttpStatus.OK);
+    }
+
 }

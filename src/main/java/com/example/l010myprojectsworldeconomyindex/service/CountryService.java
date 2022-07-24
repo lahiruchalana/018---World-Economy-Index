@@ -4,6 +4,7 @@ import com.example.l010myprojectsworldeconomyindex.model.Country;
 import com.example.l010myprojectsworldeconomyindex.repository.CountryRepository;
 import org.springframework.stereotype.Service;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,15 @@ public class CountryService {
         }
 
         countryRepository.save(country);
+    }
+
+    public Country getCountryDataByCountry(String country) {
+        Optional<Country> countryOptional = countryRepository.findByCountry(country);
+
+        if (!countryOptional.isPresent()) {
+            throw new IllegalStateException("country: " + country + " does not exist, so first create the country: " + country + " record");
+        }
+
+        return countryOptional.get();
     }
 }
