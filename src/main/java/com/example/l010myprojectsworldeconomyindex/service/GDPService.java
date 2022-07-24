@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -70,5 +71,31 @@ public class GDPService {
         }
 
         return gdpList;
+    }
+
+
+    public List<GDP> getGDPDataByManyCountries(String countryOne, String countryTwo, String countryThree, String countryFour) {
+        List<GDP> countryOneGDP = gdpRepository.findAllByCountry(countryOne);
+        List<GDP> countryTwoGDP = gdpRepository.findAllByCountry(countryTwo);
+        List<GDP> countryThreeGDP = gdpRepository.findAllByCountry(countryThree);
+        List<GDP> countryFourGDP = gdpRepository.findAllByCountry(countryFour);
+
+        if (countryOneGDP.isEmpty() && countryOne != null) {
+            throw new IllegalStateException("country: " + countryOne + " does not exist. add other country or remove " + countryOne + ".");
+        } else if (countryTwoGDP.isEmpty() && countryTwo != null) {
+            throw new IllegalStateException("country: " + countryTwo + " does not exist. add other country or remove " + countryTwo + ".");
+        } else if (countryThreeGDP.isEmpty() && countryThree != null) {
+            throw new IllegalStateException("country: " + countryThree + " does not exist. add other country or remove " + countryThree + ".");
+        } else if (countryFourGDP.isEmpty() && countryFour != null) {
+            throw new IllegalStateException("country: " + countryFour + " does not exist. add other country or remove " + countryFour + ".");
+        }
+
+        List<GDP> countryAllGDPData = new ArrayList<>();
+        countryAllGDPData.addAll(countryOneGDP);
+        countryAllGDPData.addAll(countryTwoGDP);
+        countryAllGDPData.addAll(countryThreeGDP);
+        countryAllGDPData.addAll(countryFourGDP);
+
+        return countryAllGDPData;
     }
 }
