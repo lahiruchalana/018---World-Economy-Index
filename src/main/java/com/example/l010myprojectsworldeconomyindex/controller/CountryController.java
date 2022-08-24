@@ -31,11 +31,11 @@ public class CountryController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "{country}")
+    @GetMapping(path = "{countryName}")
     public ResponseEntity<Country> getCountryDataByCountry(
-            @PathVariable("country") String country
+            @PathVariable("countryName") String countryName
     ) {
-        return new ResponseEntity<>(countryService.getCountryDataByCountry(country), HttpStatus.OK);
+        return new ResponseEntity<>(countryService.getCountryDataByCountry(countryName), HttpStatus.OK);
     }
 
 }

@@ -1,31 +1,35 @@
 package com.example.l010myprojectsworldeconomyindex.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "country_tbl")
 public class Country {
+
     @Id
+    @SequenceGenerator(
+            name = "country_sequence",
+            sequenceName = "country_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "country_sequence"
+    )
     private Long countryId;
-    private String country;
-    private Long continentId;
-    private String continent;
-    private Long subContinentId;
-    private String subContinent;
+    private String countryName;
+    private String continentName;
+    private String subContinentName;
 
     public Country() {
 
     }
 
-    public Country(Long countryId, String country, Long continentId, String continent, Long subContinentId, String subContinent) {
+    public Country(Long countryId, String countryName, String continentName, String subContinentName) {
         this.countryId = countryId;
-        this.country = country;
-        this.continentId = continentId;
-        this.continent = continent;
-        this.subContinentId = subContinentId;
-        this.subContinent = subContinent;
+        this.countryName = countryName;
+        this.continentName = continentName;
+        this.subContinentName = subContinentName;
     }
 
     public Long getCountryId() {
@@ -36,55 +40,27 @@ public class Country {
         this.countryId = countryId;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
-    public Long getContinentId() {
-        return continentId;
+    public String getContinentName() {
+        return continentName;
     }
 
-    public void setContinentId(Long continentId) {
-        this.continentId = continentId;
+    public void setContinentName(String continentName) {
+        this.continentName = continentName;
     }
 
-    public String getContinent() {
-        return continent;
+    public String getSubContinentName() {
+        return subContinentName;
     }
 
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
-
-    public Long getSubContinentId() {
-        return subContinentId;
-    }
-
-    public void setSubContinentId(Long subContinentId) {
-        this.subContinentId = subContinentId;
-    }
-
-    public String getSubContinent() {
-        return subContinent;
-    }
-
-    public void setSubContinent(String subContinent) {
-        this.subContinent = subContinent;
-    }
-
-    @Override
-    public String toString() {
-        return "Country{" +
-                "countryId=" + countryId +
-                ", country='" + country + '\'' +
-                ", continentId=" + continentId +
-                ", continent='" + continent + '\'' +
-                ", subContinentId=" + subContinentId +
-                ", subContinent='" + subContinent + '\'' +
-                '}';
+    public void setSubContinentName(String subContinentName) {
+        this.subContinentName = subContinentName;
     }
 }
