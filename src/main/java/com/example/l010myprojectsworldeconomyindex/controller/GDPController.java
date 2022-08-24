@@ -65,14 +65,14 @@ public class GDPController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping(path = "/compare")
-//    public ResponseEntity<List<GDP>> getGDPDataByManyCountries(
-//            @RequestParam(required = false) String countryOne,
-//            @RequestParam(required = false) String countryTwo,
-//            @RequestParam(required = false) String countryThree,
-//            @RequestParam(required = false) String countryFour
-//    ) {
-//        return new ResponseEntity<>(gdpService.getGDPDataByManyCountries(countryOne, countryTwo, countryThree, countryFour), HttpStatus.OK);
-//    }
+    @GetMapping(path = "compare/{countryNameOne}/{countryNameTwo}/{countryNameThree}/{countryNameFour}")
+    public ResponseEntity<List<GDP>> getGDPDataByManyCountries(
+            @PathVariable("countryNameOne") String countryNameOne,
+            @PathVariable("countryNameTwo") String countryNameTwo,
+            @PathVariable("countryNameThree") String countryNameThree,
+            @PathVariable("countryNameFour") String countryNameFour
+    ) {
+        return new ResponseEntity<>(gdpService.getGDPDataByManyCountries(countryNameOne, countryNameTwo, countryNameThree, countryNameFour), HttpStatus.OK);
+    }
 
 }
