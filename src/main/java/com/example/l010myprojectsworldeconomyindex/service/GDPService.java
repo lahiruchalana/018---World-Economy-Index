@@ -97,4 +97,6 @@ public class GDPService {
         return countryAllGDPData;
     }
 
+    // getGDPDataByManyCountriesInAYear() --->> put year and 4 countries
+
 }
