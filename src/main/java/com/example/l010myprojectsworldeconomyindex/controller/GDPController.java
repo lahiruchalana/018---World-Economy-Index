@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -32,37 +33,38 @@ public class GDPController {
         return new ResponseEntity<>(gdpService.getAllGDPData(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "{country}")
-    public ResponseEntity<List<GDP>> getGDPByCountry(
-            @PathVariable("country") String country
+    @GetMapping(path = "{countryName}")
+    public ResponseEntity<List<GDP>> getGDPDataByCountryName(
+            @PathVariable("countryName") String countryName
     ) {
-        return new ResponseEntity<>(gdpService.getGDPByCountryName(country), HttpStatus.OK);
+        return new ResponseEntity<>(gdpService.getGDPDataByCountryName(countryName), HttpStatus.OK);
     }
 
-//    @GetMapping(path = "/country/and/year/between")
-//    public ResponseEntity<List<GDP>> getGDPDataByCountryAndYearBetween(
-//            @RequestParam(required = true) String country,
-//            @RequestParam(required = true) YearMonth yearMonthStart,
-//            @RequestParam(required = true) YearMonth yearMonthEnd) {
-//        return new ResponseEntity<>(gdpService.getGDPDataByCountryAndYearBetween(country, yearMonthStart, yearMonthEnd), HttpStatus.OK);
-//    }
-//
-//    @PutMapping(path = "{gdpId}")
-//    public ResponseEntity<?> updateGDPData(
-//            @PathVariable("gdpId") Long gdpId,
-//            @RequestParam(required = false) Integer gdpValue,
-//            @RequestParam(required = false) YearMonth year) {
-//        gdpService.updateGDPData(gdpId, gdpValue, year);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @DeleteMapping(path = "{gdpId}")
-//    public ResponseEntity<?> deleteGDPData(
-//            @PathVariable("gdpId") Long gdpId ) {
-//        gdpService.deleteGDPData(gdpId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
+    @GetMapping(path = "{countryName}/{year}")
+    public ResponseEntity<List<GDP>> getGDPDataByCountryNameAndYear(
+            @PathVariable("countryName") String countryName,
+            @PathVariable("year")Year year
+            ) {
+        return new ResponseEntity<>(gdpService.getGDPDataByCountryNameAndYear(countryName, year), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "update/{gdpId}/{gdpValue}/{year}")
+    public ResponseEntity<?> updateGDPData(
+            @PathVariable("gdpId") Long gdpId,
+            @PathVariable("gdpValue") Integer gdpValue,
+            @PathVariable("year") Year year
+    ) {
+        gdpService.updateGDPData(gdpId, gdpValue, year);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(path = "{gdpId}")
+    public ResponseEntity<?> deleteGDPData(
+            @PathVariable("gdpId") Long gdpId ) {
+        gdpService.deleteGDPData(gdpId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 //    @GetMapping(path = "/compare")
 //    public ResponseEntity<List<GDP>> getGDPDataByManyCountries(
 //            @RequestParam(required = false) String countryOne,

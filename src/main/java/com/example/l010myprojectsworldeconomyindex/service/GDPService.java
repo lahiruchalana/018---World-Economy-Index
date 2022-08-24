@@ -5,6 +5,7 @@ import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,52 +27,52 @@ public class GDPService {
         return gdpRepository.findAll();
     }
 
-    public List<GDP> getGDPByCountryName(String country) {
-        List<GDP> gdpList = gdpRepository.findGDPSByCountryName(country);
+    public List<GDP> getGDPDataByCountryName(String countryName) {
+        List<GDP> gdpList = gdpRepository.findGDPSByCountryName(countryName);
 
         if (gdpList.isEmpty()) {
-            throw new IllegalStateException("country: " + country + " does not exist");
+            throw new IllegalStateException("country: " + countryName + " does not exist");
         }
 
         return gdpList;
     }
-//
-//    @Transactional
-//    public void updateGDPData(Long gdpId, Integer gdpValue, YearMonth year) {
-//        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
-//                "gdpId:" + gdpId + " does not exist"
-//        ));
-//
-//        if (gdpValue != null && gdpValue > 0) {
-//            gdp.setGdpValue(gdpValue);
-//        }
-//
-//        if (year != null) {
-//            gdp.setYear(year);
-//        }
-//
-//    }
-//
-//
-//    public void deleteGDPData(Long gdpId) {
-//        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
-//                "id: " + gdpId + " does not exist"
-//        ));
-//
-//        System.out.println(gdpId);
-//        gdpRepository.delete(gdp);
-//    }
-//
-//    public List<GDP> getGDPDataByCountryAndYearBetween(String country, YearMonth yearMonthStart, YearMonth yearMonthEnd) {
-//        List<GDP> gdpList = gdpRepository.findAllByCountryAndYearAfterAndYearBefore(country, yearMonthStart, yearMonthEnd);
-//
-//        if (gdpList.isEmpty()) {
-//            throw new IllegalStateException("country: " + country + " has no any recorded GDP data between " + yearMonthStart + " - " + yearMonthEnd + " time period");
-//        }
-//
-//        return gdpList;
-//    }
-//
+
+    public List<GDP> getGDPDataByCountryNameAndYear(String countryName, Year year) {
+        List<GDP> gdpList = gdpRepository.findGDPSByCountryCountryNameAndYear(countryName, year);
+
+        if (gdpList.isEmpty()) {
+            throw new IllegalStateException("country: " + countryName + " has no any recorded GDP data in " + year + " year");
+        }
+
+        return gdpList;
+    }
+
+    @Transactional
+    public void updateGDPData(Long gdpId, Integer gdpValue, Year year) {
+        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
+                "gdpId:" + gdpId + " does not exist"
+        ));
+
+        if (gdpValue != null && gdpValue > 0) {
+            gdp.setGdpValue(gdpValue);
+        }
+
+        if (year != null) {
+            gdp.setYear(year);
+        }
+
+    }
+
+
+    public void deleteGDPData(Long gdpId) {
+        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
+                "id: " + gdpId + " does not exist"
+        ));
+
+        System.out.println(gdpId);
+        gdpRepository.delete(gdp);
+    }
+
 //
 //    public List<GDP> getGDPDataByManyCountries(String countryOne, String countryTwo, String countryThree, String countryFour) {
 //        List<GDP> countryOneGDP = gdpRepository.findAllByCountry(countryOne);

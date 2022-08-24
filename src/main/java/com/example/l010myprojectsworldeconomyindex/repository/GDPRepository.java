@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Year;
 import java.util.List;
 
 
@@ -14,11 +15,6 @@ public interface GDPRepository extends JpaRepository<GDP, Long> {
     @Query("SELECT g FROM GDP g WHERE g.country.countryName = ?1")
     List<GDP> findGDPSByCountryName(String country);
 
-//    // get all the records of a country
-//    List<GDP> findAllByCountry(String country);
-//
-//    // get records of relevant time period
-//    List<GDP> findAllByCountryAndYearAfterAndYearBefore(String country, YearMonth yearStart, YearMonth yearEnd);
-
+    List<GDP> findGDPSByCountryCountryNameAndYear(String countryName, Year year);
 
 }
