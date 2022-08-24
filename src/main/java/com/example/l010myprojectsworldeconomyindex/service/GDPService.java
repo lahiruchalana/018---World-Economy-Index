@@ -25,6 +25,16 @@ public class GDPService {
     public List<GDP> getAllGDPData() {
         return gdpRepository.findAll();
     }
+
+    public List<GDP> getGDPByCountryName(String country) {
+        List<GDP> gdpList = gdpRepository.findGDPSByCountryName(country);
+
+        if (gdpList.isEmpty()) {
+            throw new IllegalStateException("country: " + country + " does not exist");
+        }
+
+        return gdpList;
+    }
 //
 //    @Transactional
 //    public void updateGDPData(Long gdpId, Integer gdpValue, YearMonth year) {
@@ -40,16 +50,6 @@ public class GDPService {
 //            gdp.setYear(year);
 //        }
 //
-//    }
-//
-//    public List<GDP> getGDPByCountry(String country) {
-//        List<GDP> gdpList = gdpRepository.findAllByCountry(country);
-//
-//        if (gdpList.isEmpty()) {
-//            throw new IllegalStateException("country: " + country + " does not exist");
-//        }
-//
-//        return gdpList;
 //    }
 //
 //

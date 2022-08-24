@@ -31,12 +31,14 @@ public class GDPController {
     public ResponseEntity<List<GDP>> getAllGDPData() {
         return new ResponseEntity<>(gdpService.getAllGDPData(), HttpStatus.OK);
     }
-//
-//    @GetMapping(path = "{country}")
-//    public ResponseEntity<List<GDP>> getGDPByCountry(@PathVariable("country") String country) {
-//        return new ResponseEntity<>(gdpService.getGDPByCountry(country), HttpStatus.OK);
-//    }
-//
+
+    @GetMapping(path = "{country}")
+    public ResponseEntity<List<GDP>> getGDPByCountry(
+            @PathVariable("country") String country
+    ) {
+        return new ResponseEntity<>(gdpService.getGDPByCountryName(country), HttpStatus.OK);
+    }
+
 //    @GetMapping(path = "/country/and/year/between")
 //    public ResponseEntity<List<GDP>> getGDPDataByCountryAndYearBetween(
 //            @RequestParam(required = true) String country,
