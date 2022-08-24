@@ -31,13 +31,35 @@ public class CountryService {
         countryRepository.save(country);
     }
 
-    public Country getCountryDataByCountry(String countryName) {
-        Optional<Country> countryOptional = countryRepository.findByCountryName(countryName);
+    public Country getCountryDataByCountryName(String countryName) {
+        Optional<Country> countryOptional = countryRepository.findCountryByCountryName(countryName);
 
-        if (!countryOptional.isPresent()) {
-            throw new IllegalStateException("country: " + countryName + " does not exist, so first create the country: " + countryName + " record");
-        }
+        // add later the "exception handling"
 
         return countryOptional.get();
     }
+
+    public List<Country> getCountriesDataByCountryNameContaining(String countryName) {
+        List<Country> countryList = countryRepository.findCountriesByCountryNameContaining(countryName);
+
+        if (countryList.isEmpty()) {
+            throw new IllegalStateException("country: " + countryName + " does not exist!!!");
+        }
+
+        return countryList;
+    }
+
+    public List<Country> getCountriesDataByContinentName(String continentName) {
+        List<Country> countryList = countryRepository.findCountriesByContinentName(continentName);
+
+        return countryList;
+    }
+
+    public List<Country> getCountriesDataBySubContinentName(String subContinentName) {
+        List<Country> countryList = countryRepository.findCountriesBySubContinentName(subContinentName);
+
+        return countryList;
+    }
+
+
 }

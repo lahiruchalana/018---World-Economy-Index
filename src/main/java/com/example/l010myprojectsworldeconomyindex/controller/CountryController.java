@@ -24,18 +24,39 @@ public class CountryController {
     }
 
     @PostMapping
-    public ResponseEntity<Country> addNewCountryData(
+    public ResponseEntity<?> addNewCountryData(
             @RequestBody Country country
     ) {
         countryService.addNewCountryData(country);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "{countryName}")
-    public ResponseEntity<Country> getCountryDataByCountry(
+    @GetMapping(path = "one_country_record/{countryName}")
+    public ResponseEntity<Country> getCountryDataByCountryName(
             @PathVariable("countryName") String countryName
     ) {
-        return new ResponseEntity<>(countryService.getCountryDataByCountry(countryName), HttpStatus.OK);
+        return new ResponseEntity<>(countryService.getCountryDataByCountryName(countryName), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "containing/{countryName}")
+    public ResponseEntity<List<Country>> getCountriesDataByCountryNameContaining(
+            @PathVariable("countryName") String countryName
+    ) {
+        return new ResponseEntity<>(countryService.getCountriesDataByCountryNameContaining(countryName), HttpStatus.OK);
+    }
+
+    @GetMapping("continent/{continentName}")
+    public ResponseEntity<List<Country>> getCountriesDataByContinentName(
+            @PathVariable("continentName") String continentName
+    ) {
+        return new ResponseEntity<>(countryService.getCountriesDataByContinentName(continentName), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "sub_continent/{subContinentName}")
+    public ResponseEntity<List<Country>> getCountriesDataBySubContinentName(
+            @PathVariable("subContinentName") String subContinentName
+    ) {
+        return new ResponseEntity<>(countryService.getCountriesDataBySubContinentName(subContinentName), HttpStatus.OK);
     }
 
 }
