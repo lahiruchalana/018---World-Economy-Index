@@ -1,37 +1,46 @@
 package com.example.l010myprojectsworldeconomyindex.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.time.YearMonth;
+import javax.persistence.*;
+import java.time.Month;
+import java.time.Year;
 
 @Entity
-@Table
+@Table(name = "gdp_tbl")
 public class GDP {
+
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "gdp_sequence",
+            sequenceName = "gdp_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "gdp_sequence"
+    )
     private Long dgpId;
     private Integer gdpValue;
-    private YearMonth year;
-    private Long countryId;
-    private String country;
+    private Year year;
+    private Month month;
+
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            optional = false
+    )
+    @JoinColumn(
+            name = "country_id",
+            referencedColumnName = "countryId"
+    )
+    private Country country;
 
     public GDP() {
     }
 
-    public GDP(Integer gdpValue, YearMonth year, Long countryId, String country) {
-        this.gdpValue = gdpValue;
-        this.year = year;
-        this.countryId = countryId;
-        this.country = country;
-    }
-
-    public GDP(Long dgpId, Integer gdpValue, YearMonth year, Long countryId, String country) {
+    public GDP(Long dgpId, Integer gdpValue, Year year, Month month, Country country) {
         this.dgpId = dgpId;
         this.gdpValue = gdpValue;
         this.year = year;
-        this.countryId = countryId;
+        this.month = month;
         this.country = country;
     }
 
@@ -51,40 +60,27 @@ public class GDP {
         this.gdpValue = gdpValue;
     }
 
-    public YearMonth getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public void setYear(YearMonth year) {
+    public void setYear(Year year) {
         this.year = year;
     }
 
-    public Long getCountryId() {
-        return countryId;
+    public Month getMonth() {
+        return month;
     }
 
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
+    public void setMonth(Month month) {
+        this.month = month;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
-
-    @Override
-    public String toString() {
-        return "GDP{" +
-                "dgpId=" + dgpId +
-                ", gdpValue=" + gdpValue +
-                ", year=" + year +
-                ", countryId=" + countryId +
-                ", country='" + country + '\'' +
-                '}';
-    }
-
-
 }
