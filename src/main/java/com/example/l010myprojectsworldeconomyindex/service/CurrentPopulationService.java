@@ -1,23 +1,22 @@
-//package com.example.l010myprojectsworldeconomyindex.service;
-//
-//import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
-//import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
-//import org.springframework.stereotype.Service;
-//
-//import javax.transaction.Transactional;
-//import java.time.Year;
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//public class CurrentPopulationService {
-//
-//    private final CurrentPopulationRepository currentPopulationRepository;
-//
-//    public CurrentPopulationService(CurrentPopulationRepository currentPopulationRepository) {
-//        this.currentPopulationRepository = currentPopulationRepository;
-//    }
-//
+package com.example.l010myprojectsworldeconomyindex.service;
+
+import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
+import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CurrentPopulationService {
+
+    private final CurrentPopulationRepository currentPopulationRepository;
+
+    public CurrentPopulationService(CurrentPopulationRepository currentPopulationRepository) {
+        this.currentPopulationRepository = currentPopulationRepository;
+    }
+
+    public void addNewCurrentPopulationData(CurrentPopulation currentPopulation) {
+        currentPopulationRepository.save(currentPopulation);
+    }
+
 //    public void addCurrentPopulationData(CurrentPopulation currentPopulation) {
 //        Optional<CurrentPopulation> currentPopulationOptional =
 //                currentPopulationRepository.getCurrentPopulationByCountryOrCountryId(currentPopulation.getCountry(), currentPopulation.getCountryId());
@@ -63,4 +62,4 @@
 //
 //        return currentPopulationRepository.findByCountry(country);
 //    }
-//}
+}

@@ -1,89 +1,104 @@
-//package com.example.l010myprojectsworldeconomyindex.model;
-//
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.Id;
-//import javax.persistence.Table;
-//import java.time.Year;
-//
-//@Entity
-//@Table
-//public class CurrentPopulation {
-//
-//    @Id
-//    @GeneratedValue
-//    private Long currentPopulationId;
-//    private Long countryId;
-//    private String country;
-//    private Integer currentPopulation;
-//    private Year updatedYear;
-//
-//    public CurrentPopulation() {
-//    }
-//
-//    public CurrentPopulation(Long countryId, String country, Integer currentPopulation, Year updatedYear) {
-//        this.countryId = countryId;
-//        this.country = country;
-//        this.currentPopulation = currentPopulation;
-//        this.updatedYear = updatedYear;
-//    }
-//
-//    public CurrentPopulation(Long currentPopulationId, Long countryId, String country, Integer currentPopulation, Year updatedYear) {
-//        this.currentPopulationId = currentPopulationId;
-//        this.countryId = countryId;
-//        this.country = country;
-//        this.currentPopulation = currentPopulation;
-//        this.updatedYear = updatedYear;
-//    }
-//
-//    public Long getCurrentPopulationId() {
-//        return currentPopulationId;
-//    }
-//
-//    public void setCurrentPopulationId(Long currentPopulationId) {
-//        this.currentPopulationId = currentPopulationId;
-//    }
-//
-//    public Long getCountryId() {
-//        return countryId;
-//    }
-//
-//    public void setCountryId(Long countryId) {
-//        this.countryId = countryId;
-//    }
-//
-//    public String getCountry() {
-//        return country;
-//    }
-//
-//    public void setCountry(String country) {
-//        this.country = country;
-//    }
-//
-//    public Integer getCurrentPopulation() {
-//        return currentPopulation;
-//    }
-//
-//    public void setCurrentPopulation(Integer currentPopulation) {
-//        this.currentPopulation = currentPopulation;
-//    }
-//
-//    public Year getUpdatedYear() {
-//        return updatedYear;
-//    }
-//
-//    public void setUpdatedYear(Year updatedYear) {
-//        this.updatedYear = updatedYear;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "CurrentPopulation{" +
-//                "currentPopulationId=" + currentPopulationId +
-//                ", countryId=" + countryId +
-//                ", country='" + country + '\'' +
-//                ", currentPopulation=" + currentPopulation +
-//                ", updatedYear=" + updatedYear +
-//                '}';
-//    }
-//}
+package com.example.l010myprojectsworldeconomyindex.model;
+
+import javax.persistence.*;
+import java.time.Year;
+
+@Entity
+@Table(name = "current_population_tbl")
+public class CurrentPopulation {
+
+    @Id
+    @SequenceGenerator(
+            name = "current_population_sequence",
+            sequenceName = "current_population_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "current_population_sequence"
+    )
+    private Long currentPopulationId;
+    private Integer currentPopulationValue;
+    private Float currentPopulationGrowthRate;
+    private Year year;
+
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(
+            name = "population_id",
+            referencedColumnName = "populationId"
+    )
+    private Population population;
+
+    @OneToOne(
+            fetch = FetchType.EAGER,
+            optional = false
+    )
+    @JoinColumn(
+            name = "country_id",
+            referencedColumnName = "countryId"
+    )
+    private Country country;
+
+    public CurrentPopulation() {
+    }
+
+    public CurrentPopulation(Long currentPopulationId, Integer currentPopulationValue, Float currentPopulationGrowthRate, Year year, Population population, Country country) {
+        this.currentPopulationId = currentPopulationId;
+        this.currentPopulationValue = currentPopulationValue;
+        this.currentPopulationGrowthRate = currentPopulationGrowthRate;
+        this.year = year;
+        this.population = population;
+        this.country = country;
+    }
+
+    public Long getCurrentPopulationId() {
+        return currentPopulationId;
+    }
+
+    public void setCurrentPopulationId(Long currentPopulationId) {
+        this.currentPopulationId = currentPopulationId;
+    }
+
+    public Integer getCurrentPopulationValue() {
+        return currentPopulationValue;
+    }
+
+    public void setCurrentPopulationValue(Integer currentPopulationValue) {
+        this.currentPopulationValue = currentPopulationValue;
+    }
+
+    public Float getCurrentPopulationGrowthRate() {
+        return currentPopulationGrowthRate;
+    }
+
+    public void setCurrentPopulationGrowthRate(Float currentPopulationGrowthRate) {
+        this.currentPopulationGrowthRate = currentPopulationGrowthRate;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public Population getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Population population) {
+        this.population = population;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+}
