@@ -25,12 +25,19 @@ public class CurrentPopulationController {
         currentPopulationService.addNewCurrentPopulationData(currentPopulation);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-//
-//    @GetMapping
-//    public ResponseEntity<List<CurrentPopulation>> getAllCurrentPopulationData() {
-//        return new ResponseEntity<>(currentPopulationService.getALlCurrentPopulationData(), HttpStatus.OK);
-//    }
-//
+
+    @GetMapping
+    public ResponseEntity<List<CurrentPopulation>> getAllCurrentPopulationData() {
+        return new ResponseEntity<>(currentPopulationService.getALlCurrentPopulationData(), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "{countryName}")
+    public ResponseEntity<Optional<CurrentPopulation>> getCurrentPopulationDataByCountry(
+            @PathVariable("countryName") String countryName
+    ) {
+        return new ResponseEntity<>(currentPopulationService.getCurrentPopulationDataByCountryName(countryName), HttpStatus.OK);
+    }
+
 //    @DeleteMapping(path = "{currentPopulationId}")
 //    public ResponseEntity<?> deleteCurrentPopulationData(
 //            @PathVariable("currentPopulationId") Long currentPopulationId ) {
@@ -46,12 +53,5 @@ public class CurrentPopulationController {
 //            ) {
 //        currentPopulationService.updateCurrentPopulationData(country, currentPopulation, updatedYear);
 //        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @GetMapping(path = "{country}")
-//    public ResponseEntity<Optional<CurrentPopulation>> getCurrentPopulationDataByCountry(
-//            @PathVariable("country") String country
-//    ) {
-//        return new ResponseEntity<>(currentPopulationService.getCurrentPopulationDataByCountry(country), HttpStatus.OK);
 //    }
 }
