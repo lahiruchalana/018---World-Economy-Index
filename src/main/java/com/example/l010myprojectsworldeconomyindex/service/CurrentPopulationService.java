@@ -24,11 +24,9 @@ public class CurrentPopulationService {
     }
 
     public void addNewCurrentPopulationData(CurrentPopulation currentPopulation) {
+        Population population = new Population(currentPopulation.getCurrentPopulationValue(), currentPopulation.getCurrentPopulationGrowthRate(), currentPopulation.getYear(), currentPopulation.getCountry());
 
-
-        // create a population data to store table
-
-
+        populationRepository.save(population);      // create a population data record same time in population_tbl (so no need to add again in population_tbl)
         currentPopulationRepository.save(currentPopulation);
     }
 

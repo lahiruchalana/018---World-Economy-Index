@@ -55,7 +55,7 @@ public class CurrentPopulationController {
     }
 
                                                         // only delete the currentPopulation Data but there is a related population data in population table
-    @DeleteMapping(path = "{currentPopulationId}/populationDataIdRelatedToCurrentPopulation")      // so should delete the data in population table -->> using populationTableDataId
+    @DeleteMapping(path = "{currentPopulationId}/{populationDataIdRelatedToCurrentPopulation}")      // so should delete the data in population table -->> using populationTableDataId
     public ResponseEntity<?> deleteCurrentPopulationData(
             @PathVariable("currentPopulationId") Long currentPopulationId,
             @PathVariable("populationDataIdRelatedToCurrentPopulation") Long populationDataIdRelatedToCurrentPopulation
