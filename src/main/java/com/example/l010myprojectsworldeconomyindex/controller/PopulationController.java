@@ -31,4 +31,11 @@ public class PopulationController {
         return new ResponseEntity<>(populationService.getAllPopulationData(), HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "{populationId}")
+    public ResponseEntity<?> deletePopulationData(
+            @PathVariable("populationId") Long populationId
+    ) {
+        populationService.deletePopulationData(populationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -22,4 +22,8 @@ public class PopulationService {
     public List<Population> getAllPopulationData() {
         return populationRepository.findAll();
     }
+
+    public void deletePopulationData(Long populationId) {
+        populationRepository.deleteById(populationId);
+    }
 }

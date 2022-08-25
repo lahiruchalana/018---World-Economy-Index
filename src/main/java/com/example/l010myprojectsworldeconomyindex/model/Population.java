@@ -36,6 +36,13 @@ public class Population {
     public Population() {
     }
 
+    public Population(Integer populationValue, Float populationGrowthRate, Year year, Country country) {
+        this.populationValue = populationValue;
+        this.populationGrowthRate = populationGrowthRate;
+        this.year = year;
+        this.country = country;
+    }
+
     public Population(Long populationId, Integer populationValue, Float populationGrowthRate, Year year, Country country) {
         this.populationId = populationId;
         this.populationValue = populationValue;

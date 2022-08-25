@@ -23,16 +23,6 @@ public class CurrentPopulation {
     private Year year;
 
     @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(
-            name = "population_id",
-            referencedColumnName = "populationId"
-    )
-    private Population population;
-
-    @OneToOne(
             fetch = FetchType.EAGER,
             optional = false
     )
@@ -45,12 +35,11 @@ public class CurrentPopulation {
     public CurrentPopulation() {
     }
 
-    public CurrentPopulation(Long currentPopulationId, Integer currentPopulationValue, Float currentPopulationGrowthRate, Year year, Population population, Country country) {
+    public CurrentPopulation(Long currentPopulationId, Integer currentPopulationValue, Float currentPopulationGrowthRate, Year year, Country country) {
         this.currentPopulationId = currentPopulationId;
         this.currentPopulationValue = currentPopulationValue;
         this.currentPopulationGrowthRate = currentPopulationGrowthRate;
         this.year = year;
-        this.population = population;
         this.country = country;
     }
 
@@ -84,14 +73,6 @@ public class CurrentPopulation {
 
     public void setYear(Year year) {
         this.year = year;
-    }
-
-    public Population getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Population population) {
-        this.population = population;
     }
 
     public Country getCountry() {

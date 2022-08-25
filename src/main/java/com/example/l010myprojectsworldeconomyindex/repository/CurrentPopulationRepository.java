@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CurrentPopulationRepository extends JpaRepository<CurrentPopulation, Long> {
 
     @Query("SELECT cp FROM CurrentPopulation cp WHERE cp.country.countryName = ?1")
-    Optional<CurrentPopulation> getCurrentPopulationByCountryName(String countryName);
+    Optional<CurrentPopulation> findCurrentPopulationByCountryName(String countryName);
 
 //    Optional<CurrentPopulation> getCurrentPopulationByCountryOrCountryId(String country, Long countryId);
 //

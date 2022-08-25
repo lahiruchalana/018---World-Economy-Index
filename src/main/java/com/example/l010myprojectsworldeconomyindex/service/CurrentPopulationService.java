@@ -1,9 +1,13 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
 import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
+import com.example.l010myprojectsworldeconomyindex.model.Population;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrentPopulationRepository;
+import com.example.l010myprojectsworldeconomyindex.repository.PopulationRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,11 +16,19 @@ public class CurrentPopulationService {
 
     private final CurrentPopulationRepository currentPopulationRepository;
 
-    public CurrentPopulationService(CurrentPopulationRepository currentPopulationRepository) {
+    private final PopulationRepository populationRepository;
+
+    public CurrentPopulationService(CurrentPopulationRepository currentPopulationRepository, PopulationRepository populationRepository) {
         this.currentPopulationRepository = currentPopulationRepository;
+        this.populationRepository = populationRepository;
     }
 
     public void addNewCurrentPopulationData(CurrentPopulation currentPopulation) {
+
+
+        // create a population data to store table
+
+
         currentPopulationRepository.save(currentPopulation);
     }
 
@@ -25,15 +37,39 @@ public class CurrentPopulationService {
     }
 
     public Optional<CurrentPopulation> getCurrentPopulationDataByCountryName(String countryName) {
-        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.getCurrentPopulationByCountryName(countryName);
+        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.findCurrentPopulationByCountryName(countryName);
 
         if (!currentPopulationOptional.isPresent()) {
             throw new IllegalStateException("country: " + countryName + " does not exist");
         }
 
-        return currentPopulationRepository.getCurrentPopulationByCountryName(countryName);
+        return currentPopulationRepository.findCurrentPopulationByCountryName(countryName);
     }
 
+    public void deleteCurrentPopulationData(Long currentPopulationId) {
+        CurrentPopulation currentPopulation = currentPopulationRepository.findById(currentPopulationId).orElseThrow( () ->
+                new IllegalStateException("currentPopulationId: " + currentPopulationId + " does not exist.")
+        );
+
+        currentPopulationRepository.delete(currentPopulation);
+    }
+
+    @Transactional
+    public void updateCurrentPopulationData(String countryName, Integer currentPopulationValue, Float currentPopulationGrowth, Year year) throws IllegalStateException {
+        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.findCurrentPopulationByCountryName(countryName);
+
+        if (!currentPopulationOptional.isPresent()) {
+            throw new IllegalStateException("country: " + countryName + " doest not exist, so first create the country: " + countryName + " data");
+        }
+
+        Population population = new Population(currentPopulationValue, currentPopulationGrowth, year, currentPopulationOptional.get().getCountry());
+
+        populationRepository.save(population);      // save a new population data when update the currentPopulationData
+
+        currentPopulationOptional.get().setCurrentPopulationValue(currentPopulationValue);
+        currentPopulationOptional.get().setCurrentPopulationGrowthRate(currentPopulationGrowth);
+        currentPopulationOptional.get().setYear(year);
+    }
 
 
 
@@ -49,23 +85,4 @@ public class CurrentPopulationService {
 //        currentPopulationRepository.save(currentPopulation);
 //    }
 
-//    public void deleteCurrentPopulationData(Long currentPopulationId) {
-//        CurrentPopulation currentPopulation = currentPopulationRepository.findById(currentPopulationId).orElseThrow( () ->
-//                new IllegalStateException("currentPopulationId: " + currentPopulationId + " does not exist.")
-//        );
-//
-//        currentPopulationRepository.delete(currentPopulation);
-//    }
-//
-//    @Transactional
-//    public void updateCurrentPopulationData(String country, Integer currentPopulation, Year updatedYear) throws IllegalStateException {
-//        Optional<CurrentPopulation> currentPopulationOptional = currentPopulationRepository.findByCountry(country);
-//
-//        if (!currentPopulationOptional.isPresent()) {
-//            throw new IllegalStateException("country: " + country + " doest not exist, so first create the country: " + country + " data");
-//        }
-//
-//        currentPopulationOptional.get().setCurrentPopulation(currentPopulation);
-//        currentPopulationOptional.get().setUpdatedYear(updatedYear);
-//    }
 }

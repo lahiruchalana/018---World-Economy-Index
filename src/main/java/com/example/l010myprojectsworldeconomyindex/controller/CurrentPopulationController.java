@@ -2,6 +2,7 @@ package com.example.l010myprojectsworldeconomyindex.controller;
 
 import com.example.l010myprojectsworldeconomyindex.model.CurrentPopulation;
 import com.example.l010myprojectsworldeconomyindex.service.CurrentPopulationService;
+import com.example.l010myprojectsworldeconomyindex.service.PopulationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,23 @@ public class CurrentPopulationController {
 
     private final CurrentPopulationService currentPopulationService;
 
-    public CurrentPopulationController(CurrentPopulationService currentPopulationService) {
+    private final PopulationService populationService;
+
+    public CurrentPopulationController(CurrentPopulationService currentPopulationService, PopulationService populationService) {
         this.currentPopulationService = currentPopulationService;
+        this.populationService = populationService;
+    }
+
+    // mostly using this method in currentPopulation, and saving a population data same time
+    @PutMapping(path = "update/{countryName}/{currentPopulationValue}/{currentPopulationGrowth}/{year}")
+    public ResponseEntity<?> updateCurrentPopulationData(
+            @PathVariable("countryName") String countryName,
+            @PathVariable("currentPopulationValue") Integer currentPopulationValue,
+            @PathVariable("currentPopulationGrowth") Float currentPopulationGrowth,
+            @PathVariable("year") Year year
+    ) {
+        currentPopulationService.updateCurrentPopulationData(countryName, currentPopulationValue, currentPopulationGrowth, year);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
@@ -38,20 +54,15 @@ public class CurrentPopulationController {
         return new ResponseEntity<>(currentPopulationService.getCurrentPopulationDataByCountryName(countryName), HttpStatus.OK);
     }
 
-//    @DeleteMapping(path = "{currentPopulationId}")
-//    public ResponseEntity<?> deleteCurrentPopulationData(
-//            @PathVariable("currentPopulationId") Long currentPopulationId ) {
-//        currentPopulationService.deleteCurrentPopulationData(currentPopulationId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @PutMapping(path = "{country}")
-//    public ResponseEntity<?> updateCurrentPopulationData(
-//            @PathVariable("country") String country,
-//            @RequestParam(required = true) Integer currentPopulation,
-//            @RequestParam(required = true) Year updatedYear
-//            ) {
-//        currentPopulationService.updateCurrentPopulationData(country, currentPopulation, updatedYear);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+                                                        // only delete the currentPopulation Data but there is a related population data in population table
+    @DeleteMapping(path = "{currentPopulationId}/populationDataIdRelatedToCurrentPopulation")      // so should delete the data in population table -->> using populationTableDataId
+    public ResponseEntity<?> deleteCurrentPopulationData(
+            @PathVariable("currentPopulationId") Long currentPopulationId,
+            @PathVariable("populationDataIdRelatedToCurrentPopulation") Long populationDataIdRelatedToCurrentPopulation
+    ) {
+        currentPopulationService.deleteCurrentPopulationData(currentPopulationId);
+        populationService.deletePopulationData(populationDataIdRelatedToCurrentPopulation);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
