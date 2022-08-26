@@ -79,4 +79,8 @@ public class CurrentGDPService {
         currentGDPOptional.get().getGdp().setYear(year);
         currentGDPOptional.get().getGdp().setMonth(month);
     }
+
+    public Optional<CurrentGDP> getCurrentGDPDataByCountryName(String countryName) {
+        return currentGDPRepository.findCurrentGDPByCountryName(countryName);
+    }
 }

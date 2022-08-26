@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/data/current/gdp")
@@ -52,5 +53,12 @@ public class CurrentGDPController {
             ) {
         currentGDPService.updateCurrentGDPData(countryName, isPastGDPDataSavingInGDPTableAsAGDPData, currentGDPValue, year, month);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "{countryName}")
+    public ResponseEntity<Optional<CurrentGDP>> getCurrentGDPDataByCountryName(
+            @PathVariable("countryName") String countryName
+    ) {
+        return new ResponseEntity<>( currentGDPService.getCurrentGDPDataByCountryName(countryName), HttpStatus.OK);
     }
 }
