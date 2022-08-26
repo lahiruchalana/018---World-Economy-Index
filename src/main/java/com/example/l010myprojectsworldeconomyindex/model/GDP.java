@@ -44,6 +44,13 @@ public class GDP {
         this.country = country;
     }
 
+    public GDP(Integer gdpValue, Year year, Month month, Country country) {
+        this.gdpValue = gdpValue;
+        this.year = year;
+        this.month = month;
+        this.country = country;
+    }
+
     public Long getGdpId() {
         return gdpId;
     }

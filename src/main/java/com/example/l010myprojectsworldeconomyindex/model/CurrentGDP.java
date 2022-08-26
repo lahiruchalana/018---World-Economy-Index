@@ -26,7 +26,7 @@ public class CurrentGDP {
     @Column(
             name = "current_gdp_value"
     )
-    private String currentGDPValue;
+    private Integer currentGDPValue;
     private Year year;
     private Month month;
 
@@ -53,7 +53,7 @@ public class CurrentGDP {
     public CurrentGDP() {
     }
 
-    public CurrentGDP(String currentGDPValue, Year year, Month month, Country country, GDP gdp) {
+    public CurrentGDP(Integer currentGDPValue, Year year, Month month, Country country, GDP gdp) {
         this.currentGDPValue = currentGDPValue;
         this.year = year;
         this.month = month;
@@ -69,11 +69,11 @@ public class CurrentGDP {
         this.currentGDPId = currentGDPId;
     }
 
-    public String getCurrentGDPValue() {
+    public Integer getCurrentGDPValue() {
         return currentGDPValue;
     }
 
-    public void setCurrentGDPValue(String currentGDPValue) {
+    public void setCurrentGDPValue(Integer currentGDPValue) {
         this.currentGDPValue = currentGDPValue;
     }
 

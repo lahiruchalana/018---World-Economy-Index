@@ -1,7 +1,9 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
 import com.example.l010myprojectsworldeconomyindex.model.CurrentGDP;
+import com.example.l010myprojectsworldeconomyindex.model.GDP;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrentGDPRepository;
+import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +14,11 @@ public class CurrentGDPService {
 
     private final CurrentGDPRepository currentGDPRepository;
 
-    public CurrentGDPService(CurrentGDPRepository currentGDPRepository) {
+    private final GDPRepository gdpRepository;
+
+    public CurrentGDPService(CurrentGDPRepository currentGDPRepository, GDPRepository gdpRepository) {
         this.currentGDPRepository = currentGDPRepository;
+        this.gdpRepository = gdpRepository;
     }
 
     public void addNewCurrentGDPData(CurrentGDP currentGDP) {
@@ -31,11 +36,19 @@ public class CurrentGDPService {
         return currentGDPRepository.findAll();
     }
 
-    public void deleteCurrentGDPData(Long currentGdpId) {
+    public void deleteCurrentGDPData(Long currentGdpId, Boolean isDeletingGdpValueInGDPTable) {
         CurrentGDP currentGDP = currentGDPRepository.findById(currentGdpId).orElseThrow(() ->
                 new IllegalStateException("currentGdpId : " + currentGdpId + " does not exist")
         );
 
-        currentGDPRepository.delete(currentGDP);
+        if (isDeletingGdpValueInGDPTable) {
+            currentGDPRepository.delete(currentGDP);
+        } else {
+            GDP gdp = new GDP(currentGDP.getCurrentGDPValue(), currentGDP.getYear(), currentGDP.getMonth(), currentGDP.getCountry());
+
+            gdpRepository.save(gdp);        // saved past currentGdpValue in GDP Table
+
+            currentGDPRepository.delete(currentGDP);
+        }
     }
 }

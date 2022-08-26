@@ -31,11 +31,12 @@ public class CurrentGDPController {
         return new ResponseEntity<>(currentGDPService.getAllCurrentGDPData(), HttpStatus.OK);
     }
 
-    @DeleteMapping("{currentGdpId}")
+    @DeleteMapping("{currentGdpId}/{isDeletingGdpValueInGDPTable}")
     public ResponseEntity<?> deleteCurrentGDPData (
-            @PathVariable("currentGdpId") Long currentGdpId
+            @PathVariable("currentGdpId") Long currentGdpId,
+            @PathVariable("isDeletingGdpValueInGDPTable") Boolean isDeletingGdpValueInGDPTable
     ) {
-        currentGDPService.deleteCurrentGDPData(currentGdpId);
+        currentGDPService.deleteCurrentGDPData(currentGdpId, isDeletingGdpValueInGDPTable);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
