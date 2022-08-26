@@ -30,4 +30,12 @@ public class CurrentGDPController {
     public ResponseEntity<List<CurrentGDP>> getAllCurrentGDPData() {
         return new ResponseEntity<>(currentGDPService.getAllCurrentGDPData(), HttpStatus.OK);
     }
+
+    @DeleteMapping("{currentGdpId}")
+    public ResponseEntity<?> deleteCurrentGDPData (
+            @PathVariable("currentGdpId") Long currentGdpId
+    ) {
+        currentGDPService.deleteCurrentGDPData(currentGdpId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
