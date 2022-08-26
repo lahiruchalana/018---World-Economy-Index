@@ -6,6 +6,9 @@ import com.example.l010myprojectsworldeconomyindex.repository.CurrentGDPReposito
 import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,5 +53,30 @@ public class CurrentGDPService {
 
             currentGDPRepository.delete(currentGDP);
         }
+    }
+
+    @Transactional
+    public void updateCurrentGDPData(String countryName, Boolean isPastGDPDataSavingInGDPTableAsAGDPData, Integer currentGDPValue, Year year, Month month) {
+        Optional<CurrentGDP> currentGDPOptional = currentGDPRepository.findCurrentGDPByCountryName(countryName);
+
+        if(!currentGDPOptional.isPresent()) {
+            throw new IllegalStateException("country : " + countryName + " does not exists");
+        }
+
+        if (isPastGDPDataSavingInGDPTableAsAGDPData) {
+            GDP gdp = new GDP(currentGDPOptional.get().getCurrentGDPValue(), currentGDPOptional.get().getYear(), currentGDPOptional.get().getMonth(), currentGDPOptional.get().getCountry());
+
+            gdpRepository.save(gdp);
+        }
+
+        // update currentGDP data
+        currentGDPOptional.get().setCurrentGDPValue(currentGDPValue);
+        currentGDPOptional.get().setYear(year);
+        currentGDPOptional.get().setMonth(month);
+
+        // update GDP data
+        currentGDPOptional.get().getGdp().setGdpValue(currentGDPValue);
+        currentGDPOptional.get().getGdp().setYear(year);
+        currentGDPOptional.get().getGdp().setMonth(month);
     }
 }

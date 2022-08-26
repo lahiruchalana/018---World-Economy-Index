@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -37,6 +39,18 @@ public class CurrentGDPController {
             @PathVariable("isDeletingGdpValueInGDPTable") Boolean isDeletingGdpValueInGDPTable
     ) {
         currentGDPService.deleteCurrentGDPData(currentGdpId, isDeletingGdpValueInGDPTable);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path = "{countryName}/{isPastGDPDataSavingInGDPTableAsAGDPData}/{currentGDPValue}/{year}/{month}")
+    public ResponseEntity<?> updateCurrentGDPData (
+            @PathVariable("countryName") String countryName,
+            @PathVariable("isPastGDPDataSavingInGDPTableAsAGDPData") Boolean isPastGDPDataSavingInGDPTableAsAGDPData,
+            @PathVariable("currentGDPValue") Integer currentGDPValue,
+            @PathVariable("year") Year year,
+            @PathVariable("month") Month month
+            ) {
+        currentGDPService.updateCurrentGDPData(countryName, isPastGDPDataSavingInGDPTableAsAGDPData, currentGDPValue, year, month);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
