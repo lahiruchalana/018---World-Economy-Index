@@ -60,8 +60,8 @@ public class CurrentPopulationController {
             @PathVariable("currentPopulationId") Long currentPopulationId,
             @PathVariable("populationDataIdRelatedToCurrentPopulation") Long populationDataIdRelatedToCurrentPopulation
     ) {
-        currentPopulationService.deleteCurrentPopulationData(currentPopulationId);
-        populationService.deletePopulationData(populationDataIdRelatedToCurrentPopulation);
+        currentPopulationService.deleteCurrentPopulationData(currentPopulationId);      // when display tha currentPopulation data same time display the population data in the interface
+        populationService.deletePopulationData(populationDataIdRelatedToCurrentPopulation);         // just to delete smoothly
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

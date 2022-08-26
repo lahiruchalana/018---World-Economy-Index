@@ -18,7 +18,7 @@ public class GDP {
             strategy = GenerationType.SEQUENCE,
             generator = "gdp_sequence"
     )
-    private Long dgpId;
+    private Long gdpId;
     private Integer gdpValue;
     private Year year;
     private Month month;
@@ -36,20 +36,20 @@ public class GDP {
     public GDP() {
     }
 
-    public GDP(Long dgpId, Integer gdpValue, Year year, Month month, Country country) {
-        this.dgpId = dgpId;
+    public GDP(Long gdpId, Integer gdpValue, Year year, Month month, Country country) {
+        this.gdpId = gdpId;
         this.gdpValue = gdpValue;
         this.year = year;
         this.month = month;
         this.country = country;
     }
 
-    public Long getDgpId() {
-        return dgpId;
+    public Long getGdpId() {
+        return gdpId;
     }
 
-    public void setDgpId(Long dgpId) {
-        this.dgpId = dgpId;
+    public void setGdpId(Long dgpId) {
+        this.gdpId = dgpId;
     }
 
     public Integer getGdpValue() {
