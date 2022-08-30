@@ -29,6 +29,14 @@ public class CurrentGDPService {
 
         if (currentGDPOptional.isPresent()) {       // already happening // passing an exception by spring boot -->> for OneToOne relationship with country(can not duplicate country ID)
             throw new IllegalStateException("country" + currentGDP.getCountry().getCountryName() + " already exist in the database, so update the existing country data");
+        } else if (currentGDP.getGdp().getGdpValue().intValue() != currentGDP.getCurrentGDPValue()) {       // valid the GDPValues
+            throw new IllegalStateException("currentGDPValue : " + currentGDP.getCurrentGDPValue() + " and GDPValue in GDP : " + currentGDP.getGdp().getGdpValue() + " do not equal");
+        } else if (currentGDP.getGdp().getCountry().getCountryId().intValue() != currentGDP.getCountry().getCountryId().intValue()) {   // valid the country
+            throw new IllegalStateException("currentGDPCountry : " + currentGDP.getCountry().getCountryId().intValue() + " and GDPCountry : " + currentGDP.getGdp().getCountry().getCountryId().intValue() + " do not equal");
+        } else if (!(currentGDP.getGdp().getYear().toString().equals(currentGDP.getYear().toString()))) {
+            throw new IllegalStateException("currentGDP Year : " + currentGDP.getYear() + " and GDP Year : " + currentGDP.getGdp().getYear() + " do not equals");
+        } else if (currentGDP.getGdp().getMonth() != currentGDP.getMonth()) {
+            throw new IllegalStateException("currentGDP Month : " + currentGDP.getMonth() + " and GDP Month : " + currentGDP.getGdp().getMonth() + " do not equals");
         }
 
         currentGDPRepository.save(currentGDP);
