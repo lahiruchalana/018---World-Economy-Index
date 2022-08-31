@@ -30,4 +30,13 @@ public class CurrentForeignReservesController {
     public ResponseEntity<List<CurrentForeignReserves>> getAllCurrentForeignReservesData() {
         return new ResponseEntity<>(currentForeignReservesService.getAllCurrentForeignReservesData(), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "{currentForeignReservesId}/{isDeletingForeignReservesValueInForeignReservesTable}")
+    public ResponseEntity<?> deleteCurrentForeignReservesData(
+            @PathVariable("currentForeignReservesId") Long currentForeignReservesId,
+            @PathVariable("isDeletingForeignReservesValueInForeignReservesTable") Boolean isDeletingForeignReservesValueInForeignReservesTable
+    ) {
+        currentForeignReservesService.deleteCurrentForeignReservesData(currentForeignReservesId, isDeletingForeignReservesValueInForeignReservesTable);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
