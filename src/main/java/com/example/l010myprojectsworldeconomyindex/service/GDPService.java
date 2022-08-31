@@ -1,12 +1,14 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
+import com.example.l010myprojectsworldeconomyindex.model.Country;
 import com.example.l010myprojectsworldeconomyindex.model.GDP;
+import com.example.l010myprojectsworldeconomyindex.repository.CountryRepository;
 import com.example.l010myprojectsworldeconomyindex.repository.GDPRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Month;
 import java.time.Year;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +16,11 @@ import java.util.List;
 public class GDPService {
 
     private final GDPRepository gdpRepository;
+    private final CountryRepository countryRepository;
 
-    public GDPService(GDPRepository gdpRepository) {
+    public GDPService(GDPRepository gdpRepository, CountryRepository countryRepository) {
         this.gdpRepository = gdpRepository;
+        this.countryRepository = countryRepository;
     }
 
     public void addNewGDPData(GDP gdp) {
@@ -48,10 +52,10 @@ public class GDPService {
     }
 
     @Transactional
-    public void updateGDPData(Long gdpId, Integer gdpValue, Year year) {
-        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException(
-                "gdpId:" + gdpId + " does not exist"
-        ));
+    public void updateGDPData(Long gdpId, Integer gdpValue, Year year, Month month, Long countryId) {
+        GDP gdp = gdpRepository.findById(gdpId).orElseThrow(() -> new IllegalStateException("gdpId:" + gdpId + " does not exist"));
+
+        Country country = countryRepository.findById(countryId).orElseThrow(() -> new IllegalStateException("country id does not exist"));
 
         if (gdpValue != null && gdpValue > 0) {
             gdp.setGdpValue(gdpValue);
@@ -60,6 +64,12 @@ public class GDPService {
         if (year != null) {
             gdp.setYear(year);
         }
+
+        if (month != null) {
+            gdp.setMonth(month);
+        }
+
+        gdp.setCountry(country);
 
     }
 

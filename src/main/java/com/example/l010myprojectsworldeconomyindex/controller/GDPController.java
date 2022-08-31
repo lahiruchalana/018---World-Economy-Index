@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
@@ -48,13 +49,15 @@ public class GDPController {
         return new ResponseEntity<>(gdpService.getGDPDataByCountryNameAndYear(countryName, year), HttpStatus.OK);
     }
 
-    @PutMapping(path = "update/{gdpId}/{gdpValue}/{year}")
+    @PutMapping(path = "update/{gdpId}/{gdpValue}/{year}/{month}/{countryId}")
     public ResponseEntity<?> updateGDPData(
             @PathVariable("gdpId") Long gdpId,
             @PathVariable("gdpValue") Integer gdpValue,
-            @PathVariable("year") Year year
+            @PathVariable("year") Year year,
+            @PathVariable("month") Month month,
+            @PathVariable("countryId") Long countryId
     ) {
-        gdpService.updateGDPData(gdpId, gdpValue, year);
+        gdpService.updateGDPData(gdpId, gdpValue, year, month, countryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
