@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -37,6 +39,18 @@ public class CurrentForeignReservesController {
             @PathVariable("isDeletingForeignReservesValueInForeignReservesTable") Boolean isDeletingForeignReservesValueInForeignReservesTable
     ) {
         currentForeignReservesService.deleteCurrentForeignReservesData(currentForeignReservesId, isDeletingForeignReservesValueInForeignReservesTable);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(path = "update/{countryName}/{isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData}/{currentForeignReservesValue}/{year}/{month}")
+    public ResponseEntity<?> updateCurrentForeignReservesData(
+            @PathVariable("countryName") String countryName,
+            @PathVariable("isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData") Boolean isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData,
+            @PathVariable("currentForeignReservesValue") Integer currentForeignReservesValue,
+            @PathVariable("year") Year year,
+            @PathVariable("month") Month month
+    ) {
+        currentForeignReservesService.updateCurrentForeignReservesData(countryName, isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData, currentForeignReservesValue, year, month);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

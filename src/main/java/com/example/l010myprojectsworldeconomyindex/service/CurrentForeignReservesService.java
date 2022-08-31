@@ -6,6 +6,8 @@ import com.example.l010myprojectsworldeconomyindex.repository.CurrentForeignRese
 import com.example.l010myprojectsworldeconomyindex.repository.ForeignReservesRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +54,27 @@ public class CurrentForeignReservesService {
 
         currentForeignReservesRepository.delete(currentForeignReserves);
 
+    }
+
+    public void updateCurrentForeignReservesData(String  countryName, Boolean isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData, Integer currentForeignReservesValue, Year year, Month month) {
+        Optional<CurrentForeignReserves> currentForeignReservesOptional = currentForeignReservesRepository.findCurrentForeignReservesByCountryName(countryName);
+
+        if (currentForeignReservesOptional.isEmpty()) {
+            throw new IllegalStateException("country : " + countryName + "does not exist");
+        }
+        if (isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData) {
+            ForeignReserves foreignReserves = new ForeignReserves(currentForeignReservesOptional.get().getCurrentForeignReservesValue(), currentForeignReservesOptional.get().getYear(), currentForeignReservesOptional.get().getMonth(), currentForeignReservesOptional.get().getCountry());
+
+            foreignReservesRepository.save(foreignReserves);
+        }
+
+        currentForeignReservesOptional.get().setCurrentForeignReservesValue(currentForeignReservesValue);
+        currentForeignReservesOptional.get().setYear(year);
+        currentForeignReservesOptional.get().setMonth(month);
+
+        currentForeignReservesOptional.get().getForeignReserves().setForeignReservesValue(currentForeignReservesValue);
+        currentForeignReservesOptional.get().getForeignReserves().setYear(year);
+        currentForeignReservesOptional.get().getForeignReserves().setMonth(month);
     }
 
 
