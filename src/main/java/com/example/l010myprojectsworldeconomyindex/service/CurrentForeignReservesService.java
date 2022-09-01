@@ -6,6 +6,7 @@ import com.example.l010myprojectsworldeconomyindex.repository.CurrentForeignRese
 import com.example.l010myprojectsworldeconomyindex.repository.ForeignReservesRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
@@ -56,10 +57,11 @@ public class CurrentForeignReservesService {
 
     }
 
+    @Transactional
     public void updateCurrentForeignReservesData(String  countryName, Boolean isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData, Integer currentForeignReservesValue, Year year, Month month) {
         Optional<CurrentForeignReserves> currentForeignReservesOptional = currentForeignReservesRepository.findCurrentForeignReservesByCountryName(countryName);
 
-        if (currentForeignReservesOptional.isEmpty()) {
+        if (!currentForeignReservesOptional.isPresent()) {
             throw new IllegalStateException("country : " + countryName + "does not exist");
         }
         if (isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData) {
@@ -77,5 +79,14 @@ public class CurrentForeignReservesService {
         currentForeignReservesOptional.get().getForeignReserves().setMonth(month);
     }
 
+    public Optional<CurrentForeignReserves> getCurrentForeignReservesByCountryName(String countryName) {
+        Optional<CurrentForeignReserves> currentForeignReservesOptional = currentForeignReservesRepository.findCurrentForeignReservesByCountryName(countryName);
+
+        if (!currentForeignReservesOptional.isPresent()) {
+            throw new IllegalStateException("country : " + countryName + "does not exist");
+        }
+
+        return currentForeignReservesOptional;
+    }
 
 }

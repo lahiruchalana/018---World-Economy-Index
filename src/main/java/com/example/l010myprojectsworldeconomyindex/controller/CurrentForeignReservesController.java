@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/data/current/foreign/reserves")
@@ -52,5 +53,12 @@ public class CurrentForeignReservesController {
     ) {
         currentForeignReservesService.updateCurrentForeignReservesData(countryName, isPastForeignReservesDataSavingInForeignReservesTableAsForeignReservesData, currentForeignReservesValue, year, month);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "{countryName}")
+    public ResponseEntity<Optional<CurrentForeignReserves>> getCurrentForeignReservesByCountryName(
+            @PathVariable("countryName") String countryName
+    ) {
+        return new ResponseEntity<>(currentForeignReservesService.getCurrentForeignReservesByCountryName(countryName), HttpStatus.OK);
     }
 }
