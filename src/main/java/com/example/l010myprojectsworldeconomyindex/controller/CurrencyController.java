@@ -30,4 +30,13 @@ public class CurrencyController {
     public ResponseEntity<List<Currency>> getAllCurrencyData() {
         return new ResponseEntity<>(currencyService.getAllCurrencyData(), HttpStatus.OK);
     }
+
+    @PutMapping(path = "{countryName}")
+    public ResponseEntity<?> updateCountryListInCurrencyData(
+            @PathVariable("countryName") String countryName,
+            @RequestBody Currency currency
+    ) {
+        currencyService.updateCountryListInCurrencyData(countryName, currency);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
