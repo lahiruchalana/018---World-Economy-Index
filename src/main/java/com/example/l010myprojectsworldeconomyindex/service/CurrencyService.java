@@ -4,6 +4,8 @@ import com.example.l010myprojectsworldeconomyindex.model.Currency;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CurrencyService {
 
@@ -17,4 +19,7 @@ public class CurrencyService {
         currencyRepository.save(currency);
     }
 
+    public List<Currency> getAllCurrencyData() {
+        return currencyRepository.findAll();
+    }
 }

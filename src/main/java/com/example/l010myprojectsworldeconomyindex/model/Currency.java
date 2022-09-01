@@ -44,5 +44,27 @@ public class Currency {
         this.countryList = countryList;
     }
 
+    public Long getCurrencyId() {
+        return currencyId;
+    }
 
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public String getCurrencyName() {
+        return currencyName;
+    }
+
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
+    }
+
+    public List<Country> getCountryList() {
+        return countryList;
+    }
+
+    public void setCountryList(List<Country> countryList) {
+        this.countryList = countryList;
+    }
 }
