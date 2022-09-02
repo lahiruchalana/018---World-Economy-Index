@@ -17,7 +17,7 @@ public class CurrencyRate {
             generator = "currency_rate_sequence"
     )
     private Long currencyRateId;
-    private Integer currencyRateValue;
+    private Float currencyRateValue;
     private String recordStatus;    // past or current
 
     @ManyToOne(
@@ -43,7 +43,7 @@ public class CurrencyRate {
     public CurrencyRate() {
     }
 
-    public CurrencyRate(Integer currencyRateValue, String recordStatus, Currency currency, Currency equalsCurrency) {
+    public CurrencyRate(Float currencyRateValue, String recordStatus, Currency currency, Currency equalsCurrency) {
         this.currencyRateValue = currencyRateValue;
         this.recordStatus = recordStatus;
         this.currency = currency;
@@ -58,11 +58,11 @@ public class CurrencyRate {
         this.currencyRateId = currencyRateId;
     }
 
-    public Integer getCurrencyRateValue() {
+    public Float getCurrencyRateValue() {
         return currencyRateValue;
     }
 
-    public void setCurrencyRateValue(Integer currencyRateValue) {
+    public void setCurrencyRateValue(Float currencyRateValue) {
         this.currencyRateValue = currencyRateValue;
     }
 
