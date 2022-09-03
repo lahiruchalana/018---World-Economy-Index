@@ -28,7 +28,7 @@ public class CurrencyRate {
             name = "currency_id",
             referencedColumnName = "currencyId"
     )
-    private Currency currency;
+    private Currency currency;          // equalsCurrency value 1 equals to XXX currency value
 
     @ManyToOne(
             fetch = FetchType.EAGER,
@@ -38,7 +38,7 @@ public class CurrencyRate {
             name = "equals_currency_id",
             referencedColumnName = "currencyId"
     )
-    private Currency equalsCurrency;
+    private Currency equalsCurrency;            // equalsCurrency value 1 equals to XXX currency value
 
     public CurrencyRate() {
     }
@@ -88,5 +88,16 @@ public class CurrencyRate {
 
     public void setEqualsCurrency(Currency equalsCurrency) {
         this.equalsCurrency = equalsCurrency;
+    }
+
+    @Override
+    public String toString() {
+        return "CurrencyRate{" +
+                "currencyRateId=" + currencyRateId +
+                ", currencyRateValue=" + currencyRateValue +
+                ", recordStatus='" + recordStatus + '\'' +
+                ", currency=" + currency +
+                ", equalsCurrency=" + equalsCurrency +
+                '}';
     }
 }

@@ -30,4 +30,6 @@ public class CurrencyRateController {
     public ResponseEntity<List<CurrencyRate>> getAllCurrencyRateData() {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateData(), HttpStatus.OK);
     }
+
+
 }
