@@ -6,6 +6,9 @@ import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRateReposi
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,11 +48,30 @@ public class CurrencyRateService {
         return currencyRateRepository.findAll();
     }
 
-    public void updateRecordStatusOfCurrencyRateData() {
+    @Transactional
+    public void updateCurrencyRateData(Long currencyRateId, Float currencyRateValue, String recordStatus, Year year, Month month, Long currencyId, Long equalsCurrencyId) {
+        CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
+
+        Currency currency = currencyRepository.findById(currencyId).orElseThrow(() -> new IllegalStateException("currencyId not exist"));
+        Currency equalsCurrency = currencyRepository.findById(equalsCurrencyId).orElseThrow(() -> new IllegalStateException("equalsCurrencyId not exist"));
+
+        if (recordStatus.equals("current")) {
+            Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currency.getCurrencyName(), equalsCurrency.getCurrencyName(), recordStatus);
+
+            currencyRateOptional.ifPresent(rate -> rate.setRecordStatus("past"));
+        }
+
+
+        currencyRate.setCurrencyRateValue(currencyRateValue);
+        currencyRate.setRecordStatus(recordStatus);
+        currencyRate.setYear(year);
+        currencyRate.setMonth(month);
+        currencyRate.setCurrency(currency);
+        currencyRate.setEqualsCurrency(equalsCurrency);
 
     }
 
-    public void updateCurrencyRateData() {
+    public void updateRecordStatusOfCurrencyRateData() {
 
     }
 

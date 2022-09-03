@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -31,5 +33,18 @@ public class CurrencyRateController {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateData(), HttpStatus.OK);
     }
 
+    @PutMapping(path = "update/{currencyRateId}/{currencyRateValue}/{recordStatus}/{year}/{month}/{currencyId}/{equalsCurrencyId}")
+    public ResponseEntity<?> updateCurrencyRateData(
+            @PathVariable("currencyRateId") Long currencyRateId,
+            @PathVariable("currencyRateValue") Float currencyRateValue,
+            @PathVariable("recordStatus") String recordStatus,
+            @PathVariable("year") Year year,
+            @PathVariable("month") Month month,
+            @PathVariable("currencyId") Long currencyId,
+            @PathVariable("equalsCurrencyId") Long equalsCurrencyId
+            ) {
+        currencyRateService.updateCurrencyRateData(currencyRateId,currencyRateValue,recordStatus, year, month, currencyId, equalsCurrencyId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
