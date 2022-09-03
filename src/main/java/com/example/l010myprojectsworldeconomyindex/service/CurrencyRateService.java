@@ -71,8 +71,21 @@ public class CurrencyRateService {
 
     }
 
-    public void updateRecordStatusOfCurrencyRateData() {
+    @Transactional
+    public void updateRecordStatusOfCurrencyRateData(Long currencyRateId, String recordStatus) {
+        Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.findById(currencyRateId);
 
+        if (currencyRateOptional.isEmpty()) {
+            throw new IllegalStateException("currencyRate id does not exist");
+        }
+
+        if (recordStatus.equals("current")) {
+            Optional<CurrencyRate> currencyRateOptionalSecond = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currencyRateOptional.get().getCurrency().getCurrencyName(), currencyRateOptional.get().getEqualsCurrency().getCurrencyName(), recordStatus);
+
+            currencyRateOptionalSecond.ifPresent(rate -> rate.setRecordStatus("past"));
+        }
+
+        currencyRateOptional.get().setRecordStatus(recordStatus);
     }
 
     public void deleteCurrencyRateData() {

@@ -47,4 +47,12 @@ public class CurrencyRateController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping(path = "{currencyRateId}/{recordStatus}")
+    public ResponseEntity<?> updateRecordStatusOfCurrencyRateData(
+            @PathVariable("currencyRateId") Long currencyRateId ,
+            @PathVariable("recordStatus") String recordStatus
+    ) {
+        currencyRateService.updateRecordStatusOfCurrencyRateData(currencyRateId, recordStatus);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
