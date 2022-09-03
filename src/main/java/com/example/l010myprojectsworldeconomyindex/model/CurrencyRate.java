@@ -1,6 +1,8 @@
 package com.example.l010myprojectsworldeconomyindex.model;
 
 import javax.persistence.*;
+import java.time.Month;
+import java.time.Year;
 
 @Entity
 @Table(name = "currency_rate_tbl")
@@ -19,6 +21,8 @@ public class CurrencyRate {
     private Long currencyRateId;
     private Float currencyRateValue;
     private String recordStatus;    // past or current
+    private Year year;
+    private Month month;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
@@ -43,9 +47,11 @@ public class CurrencyRate {
     public CurrencyRate() {
     }
 
-    public CurrencyRate(Float currencyRateValue, String recordStatus, Currency currency, Currency equalsCurrency) {
+    public CurrencyRate(Float currencyRateValue, String recordStatus, Year year, Month month, Currency currency, Currency equalsCurrency) {
         this.currencyRateValue = currencyRateValue;
         this.recordStatus = recordStatus;
+        this.year = year;
+        this.month = month;
         this.currency = currency;
         this.equalsCurrency = equalsCurrency;
     }
@@ -74,6 +80,22 @@ public class CurrencyRate {
         this.recordStatus = recordStatus;
     }
 
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public Month getMonth() {
+        return month;
+    }
+
+    public void setMonth(Month month) {
+        this.month = month;
+    }
+
     public Currency getCurrency() {
         return currency;
     }
@@ -88,16 +110,5 @@ public class CurrencyRate {
 
     public void setEqualsCurrency(Currency equalsCurrency) {
         this.equalsCurrency = equalsCurrency;
-    }
-
-    @Override
-    public String toString() {
-        return "CurrencyRate{" +
-                "currencyRateId=" + currencyRateId +
-                ", currencyRateValue=" + currencyRateValue +
-                ", recordStatus='" + recordStatus + '\'' +
-                ", currency=" + currency +
-                ", equalsCurrency=" + equalsCurrency +
-                '}';
     }
 }
