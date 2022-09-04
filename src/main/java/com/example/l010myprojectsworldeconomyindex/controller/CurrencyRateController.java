@@ -55,4 +55,11 @@ public class CurrencyRateController {
         currencyRateService.updateRecordStatusOfCurrencyRateData(currencyRateId, recordStatus);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping(path = "recordStatus/{recordStatus}")
+    public ResponseEntity<List<CurrencyRate>> getAllCurrentCurrencyRateData(
+            @PathVariable("recordStatus") String recordStatus
+    ) {
+        return new ResponseEntity<>(currencyRateService.getAllCurrentCurrencyRateData(recordStatus), HttpStatus.OK);
+    }
 }

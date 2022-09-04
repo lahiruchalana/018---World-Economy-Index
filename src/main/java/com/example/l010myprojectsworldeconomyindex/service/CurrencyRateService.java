@@ -88,6 +88,14 @@ public class CurrencyRateService {
         currencyRateOptional.get().setRecordStatus(recordStatus);
     }
 
+    public List<CurrencyRate> getAllCurrentCurrencyRateData(String recordStatus) {
+        return currencyRateRepository.getCurrencyRatesByRecordStatus(recordStatus);
+    }
+
+//    public CurrencyRate getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency() {
+//
+//    }
+
     public void deleteCurrencyRateData() {
 
     }
