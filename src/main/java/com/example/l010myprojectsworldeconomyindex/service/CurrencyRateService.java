@@ -92,7 +92,17 @@ public class CurrencyRateService {
         return currencyRateRepository.getCurrencyRatesByRecordStatus(recordStatus);
     }
 
-//    public CurrencyRate getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency() {
+    public Optional<CurrencyRate> getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String equalsCurrencyName) {
+        Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currencyName, equalsCurrencyName, "current");
+
+        if (currencyRateOptional.isEmpty()) {
+            throw new IllegalStateException("currenyName : " + currencyName + " equalsCurrencyName : " + equalsCurrencyName + " does not exist a current value");
+        }
+
+        return currencyRateOptional;
+    }
+
+//    public List<CurrencyRate> getCurrencyRateDataByCurrencyAndEqualsCurrency() {
 //
 //    }
 

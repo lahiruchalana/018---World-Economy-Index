@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/data/currency/rate")
@@ -61,5 +62,13 @@ public class CurrencyRateController {
             @PathVariable("recordStatus") String recordStatus
     ) {
         return new ResponseEntity<>(currencyRateService.getAllCurrentCurrencyRateData(recordStatus), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "current/{currencyName}/{equalsCurrencyName}")
+    public ResponseEntity<Optional<CurrencyRate>> getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(
+            @PathVariable("currencyName") String currencyName,
+            @PathVariable("equalsCurrencyName") String equalsCurrencyName
+    ) {
+        return new ResponseEntity<>(currencyRateService.getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
     }
 }
