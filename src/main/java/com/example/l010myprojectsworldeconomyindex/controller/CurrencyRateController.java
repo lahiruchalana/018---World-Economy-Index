@@ -79,4 +79,12 @@ public class CurrencyRateController {
     ) {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
     }
+
+    @DeleteMapping(path = "delete/{currencyRateId}")
+    public ResponseEntity<?> deleteCurrencyRateData(
+            @PathVariable("currencyRateId") Long currencyRateId
+    ) {
+        currencyRateService.deleteCurrencyRateData(currencyRateId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

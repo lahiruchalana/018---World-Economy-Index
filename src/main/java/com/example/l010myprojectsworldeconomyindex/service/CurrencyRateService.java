@@ -112,8 +112,10 @@ public class CurrencyRateService {
         return currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName;
     }
 
-    public void deleteCurrencyRateData() {
+    public void deleteCurrencyRateData(Long currencyRateId) {
+        CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
+        currencyRateRepository.delete(currencyRate);
     }
 
 }
