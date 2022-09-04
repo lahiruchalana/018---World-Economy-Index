@@ -71,4 +71,12 @@ public class CurrencyRateController {
     ) {
         return new ResponseEntity<>(currencyRateService.getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
     }
+
+    @GetMapping(path = "all/{currencyName}/{equalsCurrencyName}")
+    public ResponseEntity<List<CurrencyRate>> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(
+            @PathVariable("currencyName") String currencyName,
+            @PathVariable("equalsCurrencyName") String equalsCurrencyName
+    ) {
+        return new ResponseEntity<>(currencyRateService.getAllCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
+    }
 }

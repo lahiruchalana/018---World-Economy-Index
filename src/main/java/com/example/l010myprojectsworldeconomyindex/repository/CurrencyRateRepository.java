@@ -17,4 +17,6 @@ public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, Long
     // if there is a two or many current recordStatus for a currencyName and equalsCurrencyName -> then pls delete those (only one can exist)
 
     public List<CurrencyRate> getCurrencyRatesByRecordStatus(String recordStatus);
+
+    public List<CurrencyRate> getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName(String currencyName, String equalsCurrencyName);
 }

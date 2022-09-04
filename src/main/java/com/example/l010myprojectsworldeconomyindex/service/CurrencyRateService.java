@@ -102,9 +102,15 @@ public class CurrencyRateService {
         return currencyRateOptional;
     }
 
-//    public List<CurrencyRate> getCurrencyRateDataByCurrencyAndEqualsCurrency() {
-//
-//    }
+    public List<CurrencyRate> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String  equalsCurrencyName) {
+        List<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName(currencyName, equalsCurrencyName);
+
+        if (currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName.isEmpty()) {
+            throw new IllegalStateException("currencyName : " + currencyName + " and equalsCurrencyName : " + equalsCurrencyName + " does not exist any CurrencyRate Data");
+        }
+
+        return currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName;
+    }
 
     public void deleteCurrencyRateData() {
 
