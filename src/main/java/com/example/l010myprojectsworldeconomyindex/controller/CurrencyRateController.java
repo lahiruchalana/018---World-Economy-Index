@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(
+        origins = "*",
+        allowedHeaders = "*"
+)
 @RequestMapping(path = "api/data/currency/rate")
 public class CurrencyRateController {
 
