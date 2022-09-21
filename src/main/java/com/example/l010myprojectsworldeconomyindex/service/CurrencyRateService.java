@@ -55,24 +55,24 @@ public class CurrencyRateService {
     }
 
     @Transactional
-    public void updateCurrencyRateData(Long currencyRateId, Float currencyRateValue, String recordStatus, Year year, Month month, Integer date, Long currencyId, Long equalsCurrencyId) {
+    public void updateCurrencyRateData(Long currencyRateId, Long currencyId, CurrencyRate currencyRateNew) {
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         Currency currency = currencyRepository.findById(currencyId).orElseThrow(() -> new IllegalStateException("currencyId not exist"));
-        Currency equalsCurrency = currencyRepository.findById(equalsCurrencyId).orElseThrow(() -> new IllegalStateException("equalsCurrencyId not exist"));
+        Currency equalsCurrency = currencyRepository.findById(currencyRateNew.getEqualsCurrency().getCurrencyId()).orElseThrow(() -> new IllegalStateException("equalsCurrencyId not exist"));
 
-        if (recordStatus.equals("current")) {
-            Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currency.getCurrencyName(), equalsCurrency.getCurrencyName(), recordStatus);
+        if (currencyRateNew.getRecordStatus().equals("current")) {
+            Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currency.getCurrencyName(), equalsCurrency.getCurrencyName(), currencyRateNew.getRecordStatus());
 
             currencyRateOptional.ifPresent(rate -> rate.setRecordStatus("past"));
         }
 
 
-        currencyRate.setCurrencyRateValue(currencyRateValue);
-        currencyRate.setRecordStatus(recordStatus);
-        currencyRate.setYear(year);
-        currencyRate.setMonth(month);
-        currencyRate.setDate(date);
+        currencyRate.setCurrencyRateValue(currencyRateNew.getCurrencyRateValue());
+        currencyRate.setRecordStatus(currencyRateNew.getRecordStatus());
+        currencyRate.setYear(currencyRateNew.getYear());
+        currencyRate.setMonth(currencyRateNew.getMonth());
+        currencyRate.setDate(currencyRateNew.getDate());
         currencyRate.setCurrency(currency);
         currencyRate.setEqualsCurrency(equalsCurrency);
 

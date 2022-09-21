@@ -16,7 +16,7 @@ import java.util.Optional;
         origins = "*",
         allowedHeaders = "*"
 )
-@RequestMapping(path = "api/data/currency/rate")
+@RequestMapping(path = "api/data/currencies/rates")
 public class CurrencyRateController {
 
     private final CurrencyRateService currencyRateService;
@@ -38,18 +38,13 @@ public class CurrencyRateController {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateData(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "update/{currencyRateId}/{currencyRateValue}/{recordStatus}/{year}/{month}/{date}/{currencyId}/{equalsCurrencyId}")
+    @PutMapping(path = "currencies/{currencyId}/currencyRates/{currencyRateId}")
     public ResponseEntity<?> updateCurrencyRateData(
             @PathVariable("currencyRateId") Long currencyRateId,
-            @PathVariable("currencyRateValue") Float currencyRateValue,
-            @PathVariable("recordStatus") String recordStatus,
-            @PathVariable("year") Year year,
-            @PathVariable("month") Month month,
-            @PathVariable("date") Integer date,
             @PathVariable("currencyId") Long currencyId,
-            @PathVariable("equalsCurrencyId") Long equalsCurrencyId
+            @RequestBody CurrencyRate currencyRate
             ) {
-        currencyRateService.updateCurrencyRateData(currencyRateId,currencyRateValue,recordStatus, year, month, date, currencyId, equalsCurrencyId);
+        currencyRateService.updateCurrencyRateData(currencyRateId, currencyId, currencyRate);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
