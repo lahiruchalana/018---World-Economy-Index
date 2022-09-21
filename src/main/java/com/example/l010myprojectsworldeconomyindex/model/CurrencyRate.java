@@ -23,6 +23,7 @@ public class CurrencyRate {
     private String recordStatus;    // past or current
     private Year year;
     private Month month;
+    private Integer date;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
@@ -47,11 +48,12 @@ public class CurrencyRate {
     public CurrencyRate() {
     }
 
-    public CurrencyRate(Float currencyRateValue, String recordStatus, Year year, Month month, Currency currency, Currency equalsCurrency) {
+    public CurrencyRate(Float currencyRateValue, String recordStatus, Year year, Month month, Integer date, Currency currency, Currency equalsCurrency) {
         this.currencyRateValue = currencyRateValue;
         this.recordStatus = recordStatus;
         this.year = year;
         this.month = month;
+        this.date = date;
         this.currency = currency;
         this.equalsCurrency = equalsCurrency;
     }
@@ -110,5 +112,13 @@ public class CurrencyRate {
 
     public void setEqualsCurrency(Currency equalsCurrency) {
         this.equalsCurrency = equalsCurrency;
+    }
+
+    public Integer getDate() {
+        return date;
+    }
+
+    public void setDate(Integer date) {
+        this.date = date;
     }
 }

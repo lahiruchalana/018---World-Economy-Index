@@ -6,7 +6,7 @@ import java.time.Year;
 
 @Entity
 @Table(name = "economy_growth_rate_tbl")
-public class EconomyGrowthRate {
+public class EconomyGrowthRate {        ////////// only hold, store current EconomyGrowthRate data of countries //////////
 
     @Id
     @SequenceGenerator(

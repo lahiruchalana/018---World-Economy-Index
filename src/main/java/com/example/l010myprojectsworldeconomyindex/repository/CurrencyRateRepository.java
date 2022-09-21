@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +21,6 @@ public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, Long
     public List<CurrencyRate> getCurrencyRatesByRecordStatus(String recordStatus);
 
     public List<CurrencyRate> getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName(String currencyName, String equalsCurrencyName);
+
+    public Optional<CurrencyRate> getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(Year year, Month month, Integer date, Long currencyId, Long equalsCurrencyId);
 }

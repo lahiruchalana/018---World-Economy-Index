@@ -24,6 +24,12 @@ public class CurrencyRateService {
     }
 
     public void addNewCurrencyRateData(CurrencyRate currencyRate) {
+        Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRate.getYear(), currencyRate.getMonth(), currencyRate.getDate(), currencyRate.getCurrency().getCurrencyId(), currencyRate.getEqualsCurrency().getCurrencyId());
+
+        if (optionalCurrencyRate.isPresent()) {
+            throw new IllegalStateException("existing currency rate available for relevant " + currencyRate.getYear() + "-" + currencyRate.getMonth() + "-" + currencyRate.getDate() +" date, so please change year, month, date or update");
+        }
+
         if (currencyRate.getRecordStatus().equals("current")) {
             Optional<Currency> currencyOptional = currencyRepository.findById(currencyRate.getCurrency().getCurrencyId());
             Optional<Currency> equalsCurrencyOptional = currencyRepository.findById(currencyRate.getEqualsCurrency().getCurrencyId());
@@ -49,7 +55,7 @@ public class CurrencyRateService {
     }
 
     @Transactional
-    public void updateCurrencyRateData(Long currencyRateId, Float currencyRateValue, String recordStatus, Year year, Month month, Long currencyId, Long equalsCurrencyId) {
+    public void updateCurrencyRateData(Long currencyRateId, Float currencyRateValue, String recordStatus, Year year, Month month, Integer date, Long currencyId, Long equalsCurrencyId) {
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         Currency currency = currencyRepository.findById(currencyId).orElseThrow(() -> new IllegalStateException("currencyId not exist"));
@@ -66,6 +72,7 @@ public class CurrencyRateService {
         currencyRate.setRecordStatus(recordStatus);
         currencyRate.setYear(year);
         currencyRate.setMonth(month);
+        currencyRate.setDate(date);
         currencyRate.setCurrency(currency);
         currencyRate.setEqualsCurrency(equalsCurrency);
 
