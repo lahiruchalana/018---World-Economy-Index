@@ -73,9 +73,11 @@ public class CurrencyRateController {
     @GetMapping(path = "currencies/{currencyName}/allCurrencyRates")
     public ResponseEntity<List<CurrencyRate>> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(
             @PathVariable("currencyName") String currencyName,
-            @RequestParam(required = false) String equalsCurrencyName
+            @RequestParam(required = false) String equalsCurrencyName,
+            @RequestParam(required = false) String sortingProperty,
+            @RequestParam(required = false) String order
     ) {
-        return new ResponseEntity<>(currencyRateService.getAllCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
+        return new ResponseEntity<>(currencyRateService.getAllCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName, sortingProperty, order), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "currencyRates/{currencyRateId}")
