@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface GDPRepository extends JpaRepository<GDP, Long> {
 
-    @Query("SELECT g FROM GDP g WHERE g.country.countryName = ?1")
+    @Query("select g from GDP g where g.country.countryName = ?1")
     List<GDP> findGDPSByCountryName(String country);
 
     List<GDP> findGDPSByCountryCountryNameAndYear(String countryName, Year year);

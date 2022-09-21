@@ -24,6 +24,10 @@ public class CurrencyRateService {
     }
 
     public void addNewCurrencyRateData(CurrencyRate currencyRate) {
+        if(currencyRate.getCurrency().getCurrencyId().equals(currencyRate.getEqualsCurrency().getCurrencyId())) {
+            throw new IllegalStateException("new currencyRate currency : " + currencyRate.getCurrency().getCurrencyName() + " and equalsCurrency : " + currencyRate.getEqualsCurrency().getCurrencyName() + " are same.");
+        }
+
         Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRate.getYear(), currencyRate.getMonth(), currencyRate.getDate(), currencyRate.getCurrency().getCurrencyId(), currencyRate.getEqualsCurrency().getCurrencyId());
 
         if (optionalCurrencyRate.isPresent()) {
@@ -56,6 +60,16 @@ public class CurrencyRateService {
 
     @Transactional
     public void updateCurrencyRateData(Long currencyRateId, Long currencyId, CurrencyRate currencyRateNew) {
+        if(currencyId.equals(currencyRateNew.getEqualsCurrency().getCurrencyId())) {
+            throw new IllegalStateException("new currencyRate currency : " + currencyId + " and equalsCurrency : " + currencyRateNew.getEqualsCurrency().getCurrencyName() + " are same.");
+        }
+
+        Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRateNew.getYear(), currencyRateNew.getMonth(), currencyRateNew.getDate(), currencyId, currencyRateNew.getEqualsCurrency().getCurrencyId());
+
+        if (optionalCurrencyRate.isPresent() && !currencyRateId.equals(optionalCurrencyRate.get().getCurrencyRateId())) {
+            throw new IllegalStateException("existing currency rate available for relevant " + currencyRateNew.getYear() + "-" + currencyRateNew.getMonth() + "-" + currencyRateNew.getDate() +" date, so please change year, month, date or update");
+        }
+
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         Currency currency = currencyRepository.findById(currencyId).orElseThrow(() -> new IllegalStateException("currencyId not exist"));
@@ -103,7 +117,7 @@ public class CurrencyRateService {
         Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currencyName, equalsCurrencyName, "current");
 
         if (currencyRateOptional.isEmpty()) {
-            throw new IllegalStateException("currenyName : " + currencyName + " equalsCurrencyName : " + equalsCurrencyName + " does not exist a current value");
+            throw new IllegalStateException("currencyName : " + currencyName + " equalsCurrencyName : " + equalsCurrencyName + " does not exist a current value");
         }
 
         return currencyRateOptional;

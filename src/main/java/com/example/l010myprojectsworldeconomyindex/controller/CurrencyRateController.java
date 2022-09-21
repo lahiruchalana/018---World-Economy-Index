@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Month;
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,39 +46,39 @@ public class CurrencyRateController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "{currencyRateId}/{recordStatus}")
+    @PutMapping(path = "currencyRates/{currencyRateId}")
     public ResponseEntity<?> updateRecordStatusOfCurrencyRateData(
             @PathVariable("currencyRateId") Long currencyRateId ,
-            @PathVariable("recordStatus") String recordStatus
+            @RequestParam(required = false) String recordStatus
     ) {
         currencyRateService.updateRecordStatusOfCurrencyRateData(currencyRateId, recordStatus);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(path = "recordStatus/{recordStatus}")
+    @GetMapping(path = "currentCurrencyRates")
     public ResponseEntity<List<CurrencyRate>> getAllCurrentCurrencyRateData(
-            @PathVariable("recordStatus") String recordStatus
+            @RequestParam(required = false) String recordStatus
     ) {
         return new ResponseEntity<>(currencyRateService.getAllCurrentCurrencyRateData(recordStatus), HttpStatus.OK);
     }
 
-    @GetMapping(path = "current/{currencyName}/{equalsCurrencyName}")
+    @GetMapping(path = "currencies/{currencyName}/currentCurrencyRates")
     public ResponseEntity<Optional<CurrencyRate>> getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(
             @PathVariable("currencyName") String currencyName,
-            @PathVariable("equalsCurrencyName") String equalsCurrencyName
-    ) {
+            @RequestParam(required = false) String equalsCurrencyName
+            ) {
         return new ResponseEntity<>(currencyRateService.getCurrentCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
     }
 
-    @GetMapping(path = "all/{currencyName}/{equalsCurrencyName}")
+    @GetMapping(path = "currencies/{currencyName}/allCurrencyRates")
     public ResponseEntity<List<CurrencyRate>> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(
             @PathVariable("currencyName") String currencyName,
-            @PathVariable("equalsCurrencyName") String equalsCurrencyName
+            @RequestParam(required = false) String equalsCurrencyName
     ) {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateDataByCurrencyAndEqualsCurrency(currencyName, equalsCurrencyName), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "delete/{currencyRateId}")
+    @DeleteMapping(path = "currencyRates/{currencyRateId}")
     public ResponseEntity<?> deleteCurrencyRateData(
             @PathVariable("currencyRateId") Long currencyRateId
     ) {
