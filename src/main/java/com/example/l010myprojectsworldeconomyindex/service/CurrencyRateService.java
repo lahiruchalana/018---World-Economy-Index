@@ -1,5 +1,6 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
+import com.example.l010myprojectsworldeconomyindex.exceptions.DataExistingException;
 import com.example.l010myprojectsworldeconomyindex.model.Currency;
 import com.example.l010myprojectsworldeconomyindex.model.CurrencyRate;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRateRepository;
@@ -23,13 +24,13 @@ public class CurrencyRateService {
 
     public void addNewCurrencyRateData(CurrencyRate currencyRate) {
         if(currencyRate.getCurrency().getCurrencyId().equals(currencyRate.getEqualsCurrency().getCurrencyId())) {
-            throw new IllegalStateException("new currencyRate currency : " + currencyRate.getCurrency().getCurrencyName() + " and equalsCurrency : " + currencyRate.getEqualsCurrency().getCurrencyName() + " are same.");
+            throw new IllegalStateException("adding currencyRate currencyID : " + currencyRate.getCurrency().getCurrencyId() + " and equalsCurrencyId : " + currencyRate.getEqualsCurrency().getCurrencyId() + " are same.");
         }
 
         Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRate.getYear(), currencyRate.getMonth(), currencyRate.getDate(), currencyRate.getCurrency().getCurrencyId(), currencyRate.getEqualsCurrency().getCurrencyId());
 
         if (optionalCurrencyRate.isPresent()) {
-            throw new IllegalStateException("existing currency rate available for relevant " + currencyRate.getYear() + "-" + currencyRate.getMonth() + "-" + currencyRate.getDate() +" date, so please change year, month, date or update");
+            throw new DataExistingException("not allowed to have many records for a date");
         }
 
         if (currencyRate.getRecordStatus().equals("current")) {

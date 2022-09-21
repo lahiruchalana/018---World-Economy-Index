@@ -13,7 +13,7 @@ import java.util.List;
         origins = "*",
         allowedHeaders = "*"
 )
-@RequestMapping(path = "api/data/currency")
+@RequestMapping(path = "api/data/currencies")
 public class CurrencyController {
 
     private final CurrencyService currencyService;
@@ -35,7 +35,7 @@ public class CurrencyController {
         return new ResponseEntity<>(currencyService.getAllCurrencyData(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "{countryName}")
+    @PutMapping(path = "currencies/{countryName}")
     public ResponseEntity<?> updateCountryListInCurrencyData(
             @PathVariable("countryName") String countryName,
             @RequestBody Currency currency
