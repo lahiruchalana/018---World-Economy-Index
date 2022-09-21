@@ -38,17 +38,18 @@ public class CurrencyRateController {
         return new ResponseEntity<>(currencyRateService.getAllCurrencyRateData(), HttpStatus.OK);
     }
 
-    @PutMapping(path = "update/{currencyRateId}/{currencyRateValue}/{recordStatus}/{year}/{month}/{currencyId}/{equalsCurrencyId}")
+    @PutMapping(path = "update/{currencyRateId}/{currencyRateValue}/{recordStatus}/{year}/{month}/{date}/{currencyId}/{equalsCurrencyId}")
     public ResponseEntity<?> updateCurrencyRateData(
             @PathVariable("currencyRateId") Long currencyRateId,
             @PathVariable("currencyRateValue") Float currencyRateValue,
             @PathVariable("recordStatus") String recordStatus,
             @PathVariable("year") Year year,
             @PathVariable("month") Month month,
+            @PathVariable("date") Integer date,
             @PathVariable("currencyId") Long currencyId,
             @PathVariable("equalsCurrencyId") Long equalsCurrencyId
             ) {
-        currencyRateService.updateCurrencyRateData(currencyRateId,currencyRateValue,recordStatus, year, month, currencyId, equalsCurrencyId);
+        currencyRateService.updateCurrencyRateData(currencyRateId,currencyRateValue,recordStatus, year, month, date, currencyId, equalsCurrencyId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

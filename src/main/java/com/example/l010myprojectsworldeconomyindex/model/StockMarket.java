@@ -1,2 +1,4 @@
-package com.example.l010myprojectsworldeconomyindex.model;public class StockMarket {
+package com.example.l010myprojectsworldeconomyindex.model;
+
+public class StockMarket {
 }
