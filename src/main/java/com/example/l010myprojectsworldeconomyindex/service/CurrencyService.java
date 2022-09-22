@@ -1,6 +1,5 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
-import com.example.l010myprojectsworldeconomyindex.model.Country;
 import com.example.l010myprojectsworldeconomyindex.model.Currency;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository;
 import org.springframework.stereotype.Service;

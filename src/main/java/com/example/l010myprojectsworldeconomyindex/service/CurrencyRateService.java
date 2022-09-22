@@ -7,8 +7,6 @@ import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Month;
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,8 +121,22 @@ public class CurrencyRateService {
         return currencyRateOptional;
     }
 
-    public List<CurrencyRate> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String  equalsCurrencyName) {
-        List<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName(currencyName, equalsCurrencyName);
+    public List<CurrencyRate> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String  equalsCurrencyName, String sortingProperty, String order) {
+
+        // sorting by year-month-day for initial loading of all data by currency and equals currency
+        List<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearAscMonthAscDateAsc(currencyName, equalsCurrencyName);
+
+        if (sortingProperty.equals("Date") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearDescMonthDescDateDesc(currencyName, equalsCurrencyName);
+        } else if (sortingProperty.equals("Value") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueAsc(currencyName, equalsCurrencyName);
+        } else if (sortingProperty.equals("Value") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueDesc(currencyName, equalsCurrencyName);
+        } else if (sortingProperty.equals("Id") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdAsc(currencyName, equalsCurrencyName);
+        } else if (sortingProperty.equals("Id") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdDesc(currencyName, equalsCurrencyName);
+        }
 
         if (currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName.isEmpty()) {
             throw new IllegalStateException("currencyName : " + currencyName + " and equalsCurrencyName : " + equalsCurrencyName + " does not exist any CurrencyRate Data");

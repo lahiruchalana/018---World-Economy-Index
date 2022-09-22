@@ -4,9 +4,6 @@ import com.example.l010myprojectsworldeconomyindex.model.EconomyGrowthRate;
 import com.example.l010myprojectsworldeconomyindex.repository.EconomyGrowthRateRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.List;
-
 @Service
 public class EconomyGrowthRateService {
 
