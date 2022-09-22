@@ -24,6 +24,10 @@ public class CurrencyRateService {
     }
 
     public void addNewCurrencyRateData(CurrencyRate currencyRate) {
+        if(currencyRate.getCurrency().getCurrencyId().equals(currencyRate.getEqualsCurrency().getCurrencyId())) {
+            throw new IllegalStateException("new currencyRate currency : " + currencyRate.getCurrency().getCurrencyName() + " and equalsCurrency : " + currencyRate.getEqualsCurrency().getCurrencyName() + " are same.");
+        }
+
         Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRate.getYear(), currencyRate.getMonth(), currencyRate.getDate(), currencyRate.getCurrency().getCurrencyId(), currencyRate.getEqualsCurrency().getCurrencyId());
 
         if (optionalCurrencyRate.isPresent()) {
@@ -55,24 +59,34 @@ public class CurrencyRateService {
     }
 
     @Transactional
-    public void updateCurrencyRateData(Long currencyRateId, Float currencyRateValue, String recordStatus, Year year, Month month, Integer date, Long currencyId, Long equalsCurrencyId) {
+    public void updateCurrencyRateData(Long currencyRateId, Long currencyId, CurrencyRate currencyRateNew) {
+        if(currencyId.equals(currencyRateNew.getEqualsCurrency().getCurrencyId())) {
+            throw new IllegalStateException("new currencyRate currency : " + currencyId + " and equalsCurrency : " + currencyRateNew.getEqualsCurrency().getCurrencyName() + " are same.");
+        }
+
+        Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRateNew.getYear(), currencyRateNew.getMonth(), currencyRateNew.getDate(), currencyId, currencyRateNew.getEqualsCurrency().getCurrencyId());
+
+        if (optionalCurrencyRate.isPresent() && !currencyRateId.equals(optionalCurrencyRate.get().getCurrencyRateId())) {
+            throw new IllegalStateException("existing currency rate available for relevant " + currencyRateNew.getYear() + "-" + currencyRateNew.getMonth() + "-" + currencyRateNew.getDate() +" date, so please change year, month, date or update");
+        }
+
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         Currency currency = currencyRepository.findById(currencyId).orElseThrow(() -> new IllegalStateException("currencyId not exist"));
-        Currency equalsCurrency = currencyRepository.findById(equalsCurrencyId).orElseThrow(() -> new IllegalStateException("equalsCurrencyId not exist"));
+        Currency equalsCurrency = currencyRepository.findById(currencyRateNew.getEqualsCurrency().getCurrencyId()).orElseThrow(() -> new IllegalStateException("equalsCurrencyId not exist"));
 
-        if (recordStatus.equals("current")) {
-            Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currency.getCurrencyName(), equalsCurrency.getCurrencyName(), recordStatus);
+        if (currencyRateNew.getRecordStatus().equals("current")) {
+            Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currency.getCurrencyName(), equalsCurrency.getCurrencyName(), currencyRateNew.getRecordStatus());
 
             currencyRateOptional.ifPresent(rate -> rate.setRecordStatus("past"));
         }
 
 
-        currencyRate.setCurrencyRateValue(currencyRateValue);
-        currencyRate.setRecordStatus(recordStatus);
-        currencyRate.setYear(year);
-        currencyRate.setMonth(month);
-        currencyRate.setDate(date);
+        currencyRate.setCurrencyRateValue(currencyRateNew.getCurrencyRateValue());
+        currencyRate.setRecordStatus(currencyRateNew.getRecordStatus());
+        currencyRate.setYear(currencyRateNew.getYear());
+        currencyRate.setMonth(currencyRateNew.getMonth());
+        currencyRate.setDate(currencyRateNew.getDate());
         currencyRate.setCurrency(currency);
         currencyRate.setEqualsCurrency(equalsCurrency);
 
@@ -103,7 +117,7 @@ public class CurrencyRateService {
         Optional<CurrencyRate> currencyRateOptional = currencyRateRepository.getCurrencyRateByCurrencyAndEqualsCurrencyAndRecordStatus(currencyName, equalsCurrencyName, "current");
 
         if (currencyRateOptional.isEmpty()) {
-            throw new IllegalStateException("currenyName : " + currencyName + " equalsCurrencyName : " + equalsCurrencyName + " does not exist a current value");
+            throw new IllegalStateException("currencyName : " + currencyName + " equalsCurrencyName : " + equalsCurrencyName + " does not exist a current value");
         }
 
         return currencyRateOptional;

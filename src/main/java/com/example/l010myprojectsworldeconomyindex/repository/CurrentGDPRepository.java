@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CurrentGDPRepository extends JpaRepository<CurrentGDP, Long> {
 
-    @Query("SELECT g FROM CurrentGDP g WHERE g.country.countryName = ?1")
-    public Optional<CurrentGDP> findCurrentGDPByCountryName(String countryName);
+    @Query("select g from CurrentGDP g where g.country.countryName = ?1")
+    Optional<CurrentGDP> findCurrentGDPByCountryName(String countryName);
 
 }

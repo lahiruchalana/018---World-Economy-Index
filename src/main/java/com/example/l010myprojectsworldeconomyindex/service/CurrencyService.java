@@ -35,5 +35,6 @@ public class CurrencyService {
         }
 
         currencyOptional.get().setCountryList(currency.getCountryList());
+        currencyOptional.get().setCurrencyName(currency.getCurrencyName());
     }
 }

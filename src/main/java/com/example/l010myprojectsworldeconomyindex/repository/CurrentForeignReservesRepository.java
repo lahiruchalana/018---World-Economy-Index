@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CurrentForeignReservesRepository extends JpaRepository<CurrentForeignReserves, Long> {
 
-    @Query("SELECT c from CurrentForeignReserves c where c.country.countryName = ?1")
-    public Optional<CurrentForeignReserves> findCurrentForeignReservesByCountryName(String countryName);
+    @Query("select c from CurrentForeignReserves c where c.country.countryName = ?1")
+    Optional<CurrentForeignReserves> findCurrentForeignReservesByCountryName(String countryName);
 }

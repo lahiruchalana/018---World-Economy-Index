@@ -58,6 +58,15 @@ public class CurrencyRate {
         this.equalsCurrency = equalsCurrency;
     }
 
+    public CurrencyRate(Float currencyRateValue, String recordStatus, Year year, Month month, Integer date, Currency equalsCurrency) {
+        this.currencyRateValue = currencyRateValue;
+        this.recordStatus = recordStatus;
+        this.year = year;
+        this.month = month;
+        this.date = date;
+        this.equalsCurrency = equalsCurrency;
+    }
+
     public Long getCurrencyRateId() {
         return currencyRateId;
     }
