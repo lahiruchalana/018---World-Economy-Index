@@ -5,6 +5,8 @@ import com.example.l010myprojectsworldeconomyindex.model.Currency;
 import com.example.l010myprojectsworldeconomyindex.model.CurrencyRate;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRateRepository;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -124,9 +126,10 @@ public class CurrencyRateService {
 
     public List<CurrencyRate> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String  equalsCurrencyName, String sortingProperty, String order) {
 
-        // sorting by year-month-day for initial loading of all data by currency and equals currency
+        // sorting by year-month-day in ascending for initial loading of all data by currency and equals currency
         List<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearAscMonthAscDateAsc(currencyName, equalsCurrencyName);
 
+        // sorting by year-month-day in descending for initial loading of all data by currency and equals currency
         if (sortingProperty.equals("Date") && order.equals("Desc")) {
             currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearDescMonthDescDateDesc(currencyName, equalsCurrencyName);
         } else if (sortingProperty.equals("Value") && order.equals("Asc")) {
@@ -150,6 +153,27 @@ public class CurrencyRateService {
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         currencyRateRepository.delete(currencyRate);
+    }
+
+    public Page<CurrencyRate> getAllWithPagination(String currencyName, String equalsCurrencyName, Integer pageNumber, Integer pageSize, String sortingProperty, String order) {      // pagination
+        // sorting and pagination by year-month-day in ascending for initial loading of all data by currency and equals currency (pagination)
+        Page<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearAscMonthAscDateAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+
+        // sorting and pagination by year-month-day in descending for initial loading of all data by currency and equals currency (pagination)
+        if (sortingProperty.equals("Date") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearDescMonthDescDateDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Value") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Value") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Id") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Id") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        }
+
+        return currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName;
+
     }
 
 }
