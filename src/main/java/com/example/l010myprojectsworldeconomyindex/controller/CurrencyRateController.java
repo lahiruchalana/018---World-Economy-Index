@@ -2,6 +2,7 @@ package com.example.l010myprojectsworldeconomyindex.controller;
 
 import com.example.l010myprojectsworldeconomyindex.model.CurrencyRate;
 import com.example.l010myprojectsworldeconomyindex.service.CurrencyRateService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,5 +87,17 @@ public class CurrencyRateController {
     ) {
         currencyRateService.deleteCurrencyRateData(currencyRateId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "currencies/{currencyName}/paginationAllCurrencyRates")
+    public ResponseEntity<Page<CurrencyRate>> getAllByPage(
+            @PathVariable("currencyName") String currencyName,
+            @RequestParam(required = false) String equalsCurrencyName,
+            @RequestParam(required = false) Integer pageNumber,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) String sortingProperty,
+            @RequestParam(required = false) String order
+    ) {
+        return new ResponseEntity<>(currencyRateService.getAllWithPagination(currencyName, equalsCurrencyName, pageNumber,pageSize ,sortingProperty, order), HttpStatus.OK);
     }
 }

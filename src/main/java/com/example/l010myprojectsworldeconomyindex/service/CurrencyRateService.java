@@ -1,9 +1,12 @@
 package com.example.l010myprojectsworldeconomyindex.service;
 
+import com.example.l010myprojectsworldeconomyindex.exceptions.DataExistingException;
 import com.example.l010myprojectsworldeconomyindex.model.Currency;
 import com.example.l010myprojectsworldeconomyindex.model.CurrencyRate;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRateRepository;
 import com.example.l010myprojectsworldeconomyindex.repository.CurrencyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,13 +26,13 @@ public class CurrencyRateService {
 
     public void addNewCurrencyRateData(CurrencyRate currencyRate) {
         if(currencyRate.getCurrency().getCurrencyId().equals(currencyRate.getEqualsCurrency().getCurrencyId())) {
-            throw new IllegalStateException("new currencyRate currency : " + currencyRate.getCurrency().getCurrencyName() + " and equalsCurrency : " + currencyRate.getEqualsCurrency().getCurrencyName() + " are same.");
+            throw new IllegalStateException("adding currencyRate currencyID : " + currencyRate.getCurrency().getCurrencyId() + " and equalsCurrencyId : " + currencyRate.getEqualsCurrency().getCurrencyId() + " are same.");
         }
 
         Optional<CurrencyRate> optionalCurrencyRate = currencyRateRepository.getCurrencyRatesByYearAndMonthAndDateAndCurrencyCurrencyIdAndEqualsCurrencyCurrencyId(currencyRate.getYear(), currencyRate.getMonth(), currencyRate.getDate(), currencyRate.getCurrency().getCurrencyId(), currencyRate.getEqualsCurrency().getCurrencyId());
 
         if (optionalCurrencyRate.isPresent()) {
-            throw new IllegalStateException("existing currency rate available for relevant " + currencyRate.getYear() + "-" + currencyRate.getMonth() + "-" + currencyRate.getDate() +" date, so please change year, month, date or update");
+            throw new DataExistingException("not allowed to have many records for a date");
         }
 
         if (currencyRate.getRecordStatus().equals("current")) {
@@ -123,9 +126,10 @@ public class CurrencyRateService {
 
     public List<CurrencyRate> getAllCurrencyRateDataByCurrencyAndEqualsCurrency(String currencyName, String  equalsCurrencyName, String sortingProperty, String order) {
 
-        // sorting by year-month-day for initial loading of all data by currency and equals currency
+        // sorting by year-month-day in ascending for initial loading of all data by currency and equals currency
         List<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearAscMonthAscDateAsc(currencyName, equalsCurrencyName);
 
+        // sorting by year-month-day in descending for initial loading of all data by currency and equals currency
         if (sortingProperty.equals("Date") && order.equals("Desc")) {
             currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearDescMonthDescDateDesc(currencyName, equalsCurrencyName);
         } else if (sortingProperty.equals("Value") && order.equals("Asc")) {
@@ -149,6 +153,27 @@ public class CurrencyRateService {
         CurrencyRate currencyRate = currencyRateRepository.findById(currencyRateId).orElseThrow(() -> new IllegalStateException("currencyRate id : " + currencyRateId + " does not exist"));
 
         currencyRateRepository.delete(currencyRate);
+    }
+
+    public Page<CurrencyRate> getAllWithPagination(String currencyName, String equalsCurrencyName, Integer pageNumber, Integer pageSize, String sortingProperty, String order) {      // pagination
+        // sorting and pagination by year-month-day in ascending for initial loading of all data by currency and equals currency (pagination)
+        Page<CurrencyRate> currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearAscMonthAscDateAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+
+        // sorting and pagination by year-month-day in descending for initial loading of all data by currency and equals currency (pagination)
+        if (sortingProperty.equals("Date") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByYearDescMonthDescDateDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Value") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Value") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateValueDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Id") && order.equals("Asc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdAsc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        } else if (sortingProperty.equals("Id") && order.equals("Desc")) {
+            currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName = currencyRateRepository.getCurrencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyNameOrderByCurrencyRateIdDesc(currencyName, equalsCurrencyName, PageRequest.of(pageNumber, pageSize));
+        }
+
+        return currencyRatesByCurrencyCurrencyNameAndEqualsCurrencyCurrencyName;
+
     }
 
 }
